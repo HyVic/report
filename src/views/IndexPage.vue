@@ -44,17 +44,6 @@
       </div>
     </footer>
   </div>
-  <!-- <div class="popover">
-    <el-popover :visible="visible" placement="right-end">
-      <p>用户A请求下载用户B的XXX文件，请确认是否同意？</p>
-      <div style="text-align: right; margin: 0">
-        <el-button size="small" type="primary" @click="visible = false">
-          同意
-        </el-button>
-        <el-button size="small" text @click="visible = false">不同意</el-button>
-      </div>
-    </el-popover>
-  </div> -->
   <login-page v-if="gotoLoginPage" @close="gotoLoginPage = false"></login-page>
 </template>
 <script setup lang="ts">
