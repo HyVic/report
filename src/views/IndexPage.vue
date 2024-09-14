@@ -20,7 +20,6 @@
         <p>{{systemName}}</p>
         <div class="search">
           <input type="text" v-model="searchInput">
-<!--          <div class="search-button">{{search}}</div>-->
           <i class="iconfont icon-linedesign-12"></i>
         </div>
       </div>
