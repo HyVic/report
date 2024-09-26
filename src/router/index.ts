@@ -19,32 +19,43 @@ const router = createRouter({
                     component: () => import('../views/HomePage.vue')
                 },
                 {
-                    path: '/search',
-                    name: 'SearchPage',
-                    meta:{title:"搜索"},
-                    component: () => import('../views/SearchPage.vue')
+                    path: '/fingerprint',
+                    name: 'FingerprintSearch',
+                    meta:{title:"指纹识别"},
+                    component: () => import('../components/information-search/FingerprintSearch.vue')
                 },
                 {
-                    path: '/tools',
-                    name: 'ToolsPage',
-                    meta:{title:"工具"},
-                    component: () => import('../views/ToolsPage.vue')
+                    path: '/snpmarker',
+                    name: 'SNPMarkerSearch',
+                    meta:{title:"SNP标记"},
+                    component: () => import('../components/information-search/SNPMarkerSearch.vue')
                 },
                 {
-                    path: '/project',
-                    name: 'ProjectPage',
-                    meta:{title:"项目"},
-                    component: () => import('../views/ProjectPage.vue')
+                    path: '/varietysimilarityanalysis',
+                    name: 'VarietySimilarityAnalysis',
+                    meta:{title:"品种相似度分析"},
+                    component: () => import('../components/information-search/VarietySimilarityAnalysis.vue')
                 },
                 {
-                    path: '/help',
-                    name: 'HelpPage',
-                    meta:{title:"帮助"},
-                    component: () => import('../views/HelpPage.vue')
-                }
-
+                    path: '/varietydifferenceanalysis',
+                    name: 'VarietyDifferenceAnalysis',
+                    meta:{title:"品种差异分析"},
+                    component: () => import('../components/information-search/VarietyDifferenceAnalysis.vue')
+                },
+                {
+                    path: '/predictionofhybridparents',
+                    name: 'PredictionOfHybridParents',
+                    meta:{title:"杂交亲本预测"},
+                    component: () => import('../components/information-search/PredictionOfHybridParents.vue')
+                },
+                {
+                    path: '/information-management',
+                    name: 'AccountInformationManagement',
+                    meta:{title:"企业账户管理"},
+                    component: () => import('../components/information-management/AccountInformationManagement.vue')
+                } 
             ]
-        },
+        },      
     ],
     scrollBehavior() {
         // 始终滚动到顶部
