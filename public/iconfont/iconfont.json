@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "2678652",
+      "name": "向右",
+      "font_class": "xiangyou3",
+      "unicode": "e668",
+      "unicode_decimal": 58984
+    },
+    {
+      "icon_id": "2678651",
+      "name": "向下",
+      "font_class": "xiangxia",
+      "unicode": "e665",
+      "unicode_decimal": 58981
+    },
+    {
       "icon_id": "356470",
       "name": "上传",
       "font_class": "shangchuan",
@@ -27,25 +41,11 @@
       "unicode_decimal": 58904
     },
     {
-      "icon_id": "21333623",
-      "name": "上传",
-      "font_class": "shangchuan3",
-      "unicode": "e615",
-      "unicode_decimal": 58901
-    },
-    {
       "icon_id": "29570604",
       "name": "上传2",
       "font_class": "shangchuan21",
       "unicode": "e6b1",
       "unicode_decimal": 59057
-    },
-    {
-      "icon_id": "4245247",
-      "name": "学情数据_上传时间_icon",
-      "font_class": "shangchuanshijian_icon",
-      "unicode": "e658",
-      "unicode_decimal": 58968
     },
     {
       "icon_id": "18568344",

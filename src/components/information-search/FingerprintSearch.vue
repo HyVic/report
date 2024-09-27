@@ -39,7 +39,7 @@
                         style="width: 100%"
                     >
                         <!-- <el-table-column type="index" label="序号" width="60" /> -->
-                        <el-table-column property="number" label="染色体" width="90"/>
+                        <el-table-column property="number" label="染色体"/>
                         <el-table-column property="validCount" label="有效位点数量/比列"/>
                         <el-table-column property="referCount" label="Refer位点数量/比列" />
                         <el-table-column property="altCount" label="Alt位点数量/比列" />
@@ -530,7 +530,7 @@ onUnmounted(() => {
       width: calc(100% - 10px);
       height: auto;
       max-height: 100%;
-      overflow: auto;
+      // overflow: auto;
       // left: 0;
       // top: 0;
       .result-content{

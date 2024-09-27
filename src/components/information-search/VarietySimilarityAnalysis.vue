@@ -33,36 +33,39 @@
 
                     </el-table>
                     </div>
-                    <el-pagination></el-pagination>
                 </div>
             </div>
             <div class="result" v-if="showResult">
                 <div class="search-result- common" v-for="(item, index) in resultData" :key="index">
-                <div class="title">{{item.sortName}}比对结果</div>
-                <div class="result-content">
-                <div class="chromosome common" id="chromosome">
-                  <div class="table-info">
-                    <el-table 
-                        ref="tableRef"
-                        stripe 
-                        :data="item.ComparisonResults"
-                        style="width: 100%"
-                    >
-                        <el-table-column property="name" label="相似物种名称"/>
-                        <el-table-column property="validCount" label="相似度"/>
-                    </el-table>
+                  <div class="title">{{item.sortName}}比对结果</div>
+                  <div class="result-content">
+                  <div class="chromosome common" :id="'chromosome'+index">
+                    <div class="table-info">
+                      <el-table 
+                          ref="tableRef"
+                          stripe 
+                          :data="item.ComparisonResults"
+                          style="width: 100%"
+                      >
+                          <el-table-column property="name" label="相似物种名称"/>
+                          <el-table-column property="validCount" label="相似度"/>
+                      </el-table>
+                    </div>
+                  </div>
+                  
+                  <div class="content common" :id="'images'+index">
+                    <el-scrollbar height="100%">
+                      <div class="item">
+                        <img :src="item.image" alt="">
+                      </div>
+                    </el-scrollbar>
                   </div>
                 </div>
-                
-                <div class="content common" id="images">
-                  <div class="item">
-                    <img :src="item.image" alt="">
-                  </div>
-                </div>
-              </div>
-                </div>
+            </div>
             </div>           
             <div class="dialog-footer">
+              <el-pagination v-if="!showResult"></el-pagination>
+              <div v-if="showResult"></div>
                     <!-- <el-button v-if="!showResult"><i class="iconfont icon-p-footer"></i>清空面板</el-button> -->
                     <el-button v-if="!showResult" @click="showResult = true"><i class="iconfont icon-lujing-6"></i>比对</el-button>
                     <!-- <el-button v-if="!showResult" @click="showResult = true"><i class="iconfont icon-chanpinchaxun"></i>近似筛查</el-button> -->
@@ -74,501 +77,590 @@
 </template>
     
 <script setup lang="ts">
-import image from '../../assets/zhanwei2.jpg'
-import type { TableInstance } from 'element-plus'
-import ElPagination from '../common/ElPagination.vue'
-import { ref, onUnmounted, watchEffect, nextTick } from 'vue';
-const uploadData = ref({
-    searchName: '',
-    searchNumber: ''
-})
-const exitData = ref({
-    searchName: '',
-    searchNumber: ''
-})
-const submitSearch = (type: number) => {
-    console.log(type)
-    if(type === 1) {
-        console.log(uploadData.value)    
-    } else {
-        console.log(exitData.value)
-    }
-}
-const reset = (type: number) => {
-    if(type === 1) {
-        uploadData.value.searchName = ''
-        uploadData.value.searchNumber = ''
-    } else {
-        exitData.value.searchName = ''
-        exitData.value.searchNumber = ''
-    }
-}
-  interface User {
-    id: number
-    sortName: string
-    sortKind: string
-    approvalNumber: string
-    registrationNumber: string
-    sortSource: string
+  import image from '../../assets/zhanwei2.jpg'
+  import type { TableInstance } from 'element-plus'
+  import ElPagination from '../common/ElPagination.vue'
+  import { ref, onUnmounted, watchEffect, nextTick } from 'vue';
+  import { forEach } from 'lodash';
+  const uploadData = ref({
+      searchName: '',
+      searchNumber: ''
+  })
+  const exitData = ref({
+      searchName: '',
+      searchNumber: ''
+  })
+  const submitSearch = (type: number) => {
+      console.log(type)
+      if(type === 1) {
+          console.log(uploadData.value)    
+      } else {
+          console.log(exitData.value)
+      }
   }
-  const multipleTableRef = ref<TableInstance>()
-  const multipleSelection = ref<User[]>([])
-  const tableData: User[] = [
+  const reset = (type: number) => {
+      if(type === 1) {
+          uploadData.value.searchName = ''
+          uploadData.value.searchNumber = ''
+      } else {
+          exitData.value.searchName = ''
+          exitData.value.searchNumber = ''
+      }
+  }
+    interface User {
+      id: number
+      sortName: string
+      sortKind: string
+      approvalNumber: string
+      registrationNumber: string
+      sortSource: string
+    }
+    const multipleTableRef = ref<TableInstance>()
+    const multipleSelection = ref<User[]>([])
+    const tableData: User[] = [
+      {
+          id: 1,
+          sortName: 'string',
+          sortKind: 'string',
+          approvalNumber: 'string',
+          registrationNumber: 'string',
+          sortSource: 'string'
+      },
+      {
+          id: 2,
+          sortName: 'string',
+          sortKind: 'string',
+          approvalNumber: 'string',
+          registrationNumber: 'string',
+          sortSource: 'string'
+      },
+      {
+          id: 3,
+          sortName: 'string',
+          sortKind: 'string',
+          approvalNumber: 'string',
+          registrationNumber: 'string',
+          sortSource: 'string'
+      },
+      {
+          id: 4,
+          sortName: 'string',
+          sortKind: 'string',
+          approvalNumber: 'string',
+          registrationNumber: 'string',
+          sortSource: 'string'
+      },
+      {
+          id: 5,
+          sortName: 'string',
+          sortKind: 'string',
+          approvalNumber: 'string',
+          registrationNumber: 'string',
+          sortSource: 'string'
+      },
+      {
+          id: 6,
+          sortName: 'string',
+          sortKind: 'string',
+          approvalNumber: 'string',
+          registrationNumber: 'string',
+          sortSource: 'string'
+      },
+      {
+          id: 7,
+          sortName: 'string',
+          sortKind: 'string',
+          approvalNumber: 'string',
+          registrationNumber: 'string',
+          sortSource: 'string'
+      },
+      {
+          id: 8,
+          sortName: 'string',
+          sortKind: 'string',
+          approvalNumber: 'string',
+          registrationNumber: 'string',
+          sortSource: 'string'
+      },
+      {
+          id: 9,
+          sortName: 'string',
+          sortKind: 'string',
+          approvalNumber: 'string',
+          registrationNumber: 'string',
+          sortSource: 'string'
+      },
+      {
+          id: 10,
+          sortName: 'string',
+          sortKind: 'string',
+          approvalNumber: 'string',
+          registrationNumber: 'string',
+          sortSource: 'string'
+      },
+      {
+          id: 11,
+          sortName: 'string',
+          sortKind: 'string',
+          approvalNumber: 'string',
+          registrationNumber: 'string',
+          sortSource: 'string'
+      },
+      {
+          id: 12,
+          sortName: 'string',
+          sortKind: 'string',
+          approvalNumber: 'string',
+          registrationNumber: 'string',
+          sortSource: 'string'
+      },
+      {
+          id: 13,
+          sortName: 'string',
+          sortKind: 'string',
+          approvalNumber: 'string',
+          registrationNumber: 'string',
+          sortSource: 'string'
+      },
+      {
+          id: 14,
+          sortName: 'string',
+          sortKind: 'string',
+          approvalNumber: 'string',
+          registrationNumber: 'string',
+          sortSource: 'string'
+      },
+      {
+          id: 15,
+          sortName: 'string',
+          sortKind: 'string',
+          approvalNumber: 'string',
+          registrationNumber: 'string',
+          sortSource: 'string'
+      },
+      {
+          id: 16,
+          sortName: 'string',
+          sortKind: 'string',
+          approvalNumber: 'string',
+          registrationNumber: 'string',
+          sortSource: 'string'
+      },
+  /*     {
+          id: 17,
+          sortName: 'string',
+          sortKind: 'string',
+          approvalNumber: 'string',
+          registrationNumber: 'string',
+          sortSource: 'string'
+      },
+      {
+          id: 18,
+          sortName: 'string',
+          sortKind: 'string',
+          approvalNumber: 'string',
+          registrationNumber: 'string',
+          sortSource: 'string'
+      },
+      {
+          id: 19,
+          sortName: 'string',
+          sortKind: 'string',
+          approvalNumber: 'string',
+          registrationNumber: 'string',
+          sortSource: 'string'
+      },
+      {
+          id: 20,
+          sortName: 'string',
+          sortKind: 'string',
+          approvalNumber: 'string',
+          registrationNumber: 'string',
+          sortSource: 'string'
+      },
+      {
+          id: 21,
+          sortName: 'string',
+          sortKind: 'string',
+          approvalNumber: 'string',
+          registrationNumber: 'string',
+          sortSource: 'string'
+      },
+      {
+          id: 22,
+          sortName: 'string',
+          sortKind: 'string',
+          approvalNumber: 'string',
+          registrationNumber: 'string',
+          sortSource: 'string'
+      }, */
+    ]
+    const handleSelectionChange1 = (val: User[]) => {
+      multipleSelection.value = val
+    }
+    const handleSelectionChange2 = (val: User[]) => {
+      multipleSelection.value = val
+    }
+    const showResult = ref(false)
+    interface ChromosomeInfo {
+      name:string,
+      validCount:string,
+    }
+    const tableRef = ref<any>()
+    const resultData = ref([
+      {
+        sortName: 'A品种',
+        ComparisonResults: [
+          {
+            name: '1',
+            validCount: '99.99%',
+          },
+          {
+            name: '1',
+            validCount: '99.8%',
+          },
+          {
+            name: '1',
+            validCount: '99.5%',
+          },
+          {
+            name: '1',
+            validCount: '99.2%',
+          },
+          {
+            name: '1',
+            validCount: '99.15%',
+          },
+          {
+            name: '1',
+            validCount: '99.12%',
+          },
+          {
+            name: '1',
+            validCount: '99.1%',
+          },
+          {
+            name: '1',
+            validCount: '99%',
+          },
+          {
+            name: '1',
+            validCount: '98%',
+          },
+          {
+            name: '1',
+            validCount: '97%',
+          },
+          {
+            name: '1',
+            validCount: '96%',
+          },
+          {
+            name: '1',
+            validCount: '94%',
+          },
+          {
+            name: '1',
+            validCount: '92%',
+          },
+          {
+            name: '1',
+            validCount: '90%',
+          },
+          {
+            name: '1',
+            validCount: '88%',
+          },
+          {
+            name: '1',
+            validCount: '86%',
+          },
+          {
+            name: '1',
+            validCount: '84%',
+          },
+          {
+            name: '1',
+            validCount: '82%',
+          },
+          {
+            name: '1',
+            validCount: '80%',
+          },
+        ],
+        image: image
+      },
+      {
+        sortName: 'B品种',
+        ComparisonResults: [
+          {
+            name: '1',
+            validCount: '99.99%',
+          },
+          {
+            name: '1',
+            validCount: '99.8%',
+          },
+          {
+            name: '1',
+            validCount: '99.5%',
+          },
+          {
+            name: '1',
+            validCount: '99.2%',
+          },
+          {
+            name: '1',
+            validCount: '99.15%',
+          },
+          {
+            name: '1',
+            validCount: '99.12%',
+          },
+          {
+            name: '1',
+            validCount: '99.1%',
+          },
+          {
+            name: '1',
+            validCount: '99%',
+          },
+          {
+            name: '1',
+            validCount: '98%',
+          },
+          {
+            name: '1',
+            validCount: '97%',
+          },
+          {
+            name: '1',
+            validCount: '96%',
+          },
+          {
+            name: '1',
+            validCount: '94%',
+          },
+          {
+            name: '1',
+            validCount: '92%',
+          },
+          {
+            name: '1',
+            validCount: '90%',
+          },
+          {
+            name: '1',
+            validCount: '88%',
+          },
+          {
+            name: '1',
+            validCount: '86%',
+          },
+          {
+            name: '1',
+            validCount: '84%',
+          },
+          {
+            name: '1',
+            validCount: '82%',
+          },
+          {
+            name: '1',
+            validCount: '80%',
+          },
+        ],
+        image: image
+      },
+      {
+        sortName: 'C品种',
+        ComparisonResults: [
+          {
+            name: '1',
+            validCount: '99.99%',
+          },
+          {
+            name: '1',
+            validCount: '99.8%',
+          },
+          {
+            name: '1',
+            validCount: '99.5%',
+          },
+          {
+            name: '1',
+            validCount: '99.2%',
+          },
+          {
+            name: '1',
+            validCount: '99.15%',
+          },
+          {
+            name: '1',
+            validCount: '99.12%',
+          },
+          {
+            name: '1',
+            validCount: '99.1%',
+          },
+          {
+            name: '1',
+            validCount: '99%',
+          },
+          {
+            name: '1',
+            validCount: '98%',
+          },
+          {
+            name: '1',
+            validCount: '97%',
+          },
+          {
+            name: '1',
+            validCount: '96%',
+          },
+          {
+            name: '1',
+            validCount: '94%',
+          },
+          {
+            name: '1',
+            validCount: '92%',
+          },
+          {
+            name: '1',
+            validCount: '90%',
+          },
+          {
+            name: '1',
+            validCount: '88%',
+          },
+          {
+            name: '1',
+            validCount: '86%',
+          },
+          {
+            name: '1',
+            validCount: '84%',
+          },
+          {
+            name: '1',
+            validCount: '82%',
+          },
+          {
+            name: '1',
+            validCount: '80%',
+          },
+        ],
+        image: image
+      },
+    ])
+  const ChromosometableData: ChromosomeInfo[] = [
     {
-        id: 1,
-        sortName: 'string',
-        sortKind: 'string',
-        approvalNumber: 'string',
-        registrationNumber: 'string',
-        sortSource: 'string'
+      name: '1',
+      validCount: '12/12%',
     },
     {
-        id: 2,
-        sortName: 'string',
-        sortKind: 'string',
-        approvalNumber: 'string',
-        registrationNumber: 'string',
-        sortSource: 'string'
+      name: '1',
+      validCount: '12/12%',
     },
     {
-        id: 3,
-        sortName: 'string',
-        sortKind: 'string',
-        approvalNumber: 'string',
-        registrationNumber: 'string',
-        sortSource: 'string'
+      name: '1',
+      validCount: '12/12%',
     },
     {
-        id: 4,
-        sortName: 'string',
-        sortKind: 'string',
-        approvalNumber: 'string',
-        registrationNumber: 'string',
-        sortSource: 'string'
+      name: '1',
+      validCount: '12/12%',
     },
     {
-        id: 5,
-        sortName: 'string',
-        sortKind: 'string',
-        approvalNumber: 'string',
-        registrationNumber: 'string',
-        sortSource: 'string'
+      name: '1',
+      validCount: '12/12%',
     },
     {
-        id: 6,
-        sortName: 'string',
-        sortKind: 'string',
-        approvalNumber: 'string',
-        registrationNumber: 'string',
-        sortSource: 'string'
+      name: '1',
+      validCount: '12/12%',
     },
     {
-        id: 7,
-        sortName: 'string',
-        sortKind: 'string',
-        approvalNumber: 'string',
-        registrationNumber: 'string',
-        sortSource: 'string'
+      name: '1',
+      validCount: '12/12%',
     },
     {
-        id: 8,
-        sortName: 'string',
-        sortKind: 'string',
-        approvalNumber: 'string',
-        registrationNumber: 'string',
-        sortSource: 'string'
+      name: '1',
+      validCount: '12/12%',
     },
     {
-        id: 9,
-        sortName: 'string',
-        sortKind: 'string',
-        approvalNumber: 'string',
-        registrationNumber: 'string',
-        sortSource: 'string'
+      name: '1',
+      validCount: '12/12%',
     },
     {
-        id: 10,
-        sortName: 'string',
-        sortKind: 'string',
-        approvalNumber: 'string',
-        registrationNumber: 'string',
-        sortSource: 'string'
+      name: '1',
+      validCount: '12/12%',
     },
     {
-        id: 11,
-        sortName: 'string',
-        sortKind: 'string',
-        approvalNumber: 'string',
-        registrationNumber: 'string',
-        sortSource: 'string'
+      name: '1',
+      validCount: '12/12%',
     },
     {
-        id: 12,
-        sortName: 'string',
-        sortKind: 'string',
-        approvalNumber: 'string',
-        registrationNumber: 'string',
-        sortSource: 'string'
+      name: '1',
+      validCount: '12/12%',
+    },
+    {
+      name: '1',
+      validCount: '12/12%',
+    },
+    {
+      name: '1',
+      validCount: '12/12%',
+    },
+    {
+      name: '1',
+      validCount: '12/12%',
+    },
+    {
+      name: '1',
+      validCount: '12/12%',
+    },
+    {
+      name: '1',
+      validCount: '12/12%',
+    },
+    {
+      name: '1',
+      validCount: '12/12%',
+    },
+    {
+      name: '1',
+      validCount: '12/12%',
     },
   ]
-  const handleSelectionChange1 = (val: User[]) => {
-    multipleSelection.value = val
-  }
-  const handleSelectionChange2 = (val: User[]) => {
-    multipleSelection.value = val
-  }
-  const showResult = ref(false)
-  interface ChromosomeInfo {
-    name:string,
-    validCount:string,
-  }
-  const tableRef = ref<any>()
-  const resultData = ref([
-    {
-      sortName: 'A品种',
-      ComparisonResults: [
-        {
-          name: '1',
-          validCount: '99.99%',
-        },
-        {
-          name: '1',
-          validCount: '99.8%',
-        },
-        {
-          name: '1',
-          validCount: '99.5%',
-        },
-        {
-          name: '1',
-          validCount: '99.2%',
-        },
-        {
-          name: '1',
-          validCount: '99.15%',
-        },
-        {
-          name: '1',
-          validCount: '99.12%',
-        },
-        {
-          name: '1',
-          validCount: '99.1%',
-        },
-        {
-          name: '1',
-          validCount: '99%',
-        },
-        {
-          name: '1',
-          validCount: '98%',
-        },
-        {
-          name: '1',
-          validCount: '97%',
-        },
-        {
-          name: '1',
-          validCount: '96%',
-        },
-        {
-          name: '1',
-          validCount: '94%',
-        },
-        {
-          name: '1',
-          validCount: '92%',
-        },
-        {
-          name: '1',
-          validCount: '90%',
-        },
-        {
-          name: '1',
-          validCount: '88%',
-        },
-        {
-          name: '1',
-          validCount: '86%',
-        },
-        {
-          name: '1',
-          validCount: '84%',
-        },
-        {
-          name: '1',
-          validCount: '82%',
-        },
-        {
-          name: '1',
-          validCount: '80%',
-        },
-      ],
-      image: image
-    },
-    {
-      sortName: 'B品种',
-      ComparisonResults: [
-        {
-          name: '1',
-          validCount: '99.99%',
-        },
-        {
-          name: '1',
-          validCount: '99.8%',
-        },
-        {
-          name: '1',
-          validCount: '99.5%',
-        },
-        {
-          name: '1',
-          validCount: '99.2%',
-        },
-        {
-          name: '1',
-          validCount: '99.15%',
-        },
-        {
-          name: '1',
-          validCount: '99.12%',
-        },
-        {
-          name: '1',
-          validCount: '99.1%',
-        },
-        {
-          name: '1',
-          validCount: '99%',
-        },
-        {
-          name: '1',
-          validCount: '98%',
-        },
-        {
-          name: '1',
-          validCount: '97%',
-        },
-        {
-          name: '1',
-          validCount: '96%',
-        },
-        {
-          name: '1',
-          validCount: '94%',
-        },
-        {
-          name: '1',
-          validCount: '92%',
-        },
-        {
-          name: '1',
-          validCount: '90%',
-        },
-        {
-          name: '1',
-          validCount: '88%',
-        },
-        {
-          name: '1',
-          validCount: '86%',
-        },
-        {
-          name: '1',
-          validCount: '84%',
-        },
-        {
-          name: '1',
-          validCount: '82%',
-        },
-        {
-          name: '1',
-          validCount: '80%',
-        },
-      ],
-      image: image
-    },
-    {
-      sortName: 'C品种',
-      ComparisonResults: [
-        {
-          name: '1',
-          validCount: '99.99%',
-        },
-        {
-          name: '1',
-          validCount: '99.8%',
-        },
-        {
-          name: '1',
-          validCount: '99.5%',
-        },
-        {
-          name: '1',
-          validCount: '99.2%',
-        },
-        {
-          name: '1',
-          validCount: '99.15%',
-        },
-        {
-          name: '1',
-          validCount: '99.12%',
-        },
-        {
-          name: '1',
-          validCount: '99.1%',
-        },
-        {
-          name: '1',
-          validCount: '99%',
-        },
-        {
-          name: '1',
-          validCount: '98%',
-        },
-        {
-          name: '1',
-          validCount: '97%',
-        },
-        {
-          name: '1',
-          validCount: '96%',
-        },
-        {
-          name: '1',
-          validCount: '94%',
-        },
-        {
-          name: '1',
-          validCount: '92%',
-        },
-        {
-          name: '1',
-          validCount: '90%',
-        },
-        {
-          name: '1',
-          validCount: '88%',
-        },
-        {
-          name: '1',
-          validCount: '86%',
-        },
-        {
-          name: '1',
-          validCount: '84%',
-        },
-        {
-          name: '1',
-          validCount: '82%',
-        },
-        {
-          name: '1',
-          validCount: '80%',
-        },
-      ],
-      image: image
-    },
-  ])
-const ChromosometableData: ChromosomeInfo[] = [
-  {
-    name: '1',
-    validCount: '12/12%',
-  },
-  {
-    name: '1',
-    validCount: '12/12%',
-  },
-  {
-    name: '1',
-    validCount: '12/12%',
-  },
-  {
-    name: '1',
-    validCount: '12/12%',
-  },
-  {
-    name: '1',
-    validCount: '12/12%',
-  },
-  {
-    name: '1',
-    validCount: '12/12%',
-  },
-  {
-    name: '1',
-    validCount: '12/12%',
-  },
-  {
-    name: '1',
-    validCount: '12/12%',
-  },
-  {
-    name: '1',
-    validCount: '12/12%',
-  },
-  {
-    name: '1',
-    validCount: '12/12%',
-  },
-  {
-    name: '1',
-    validCount: '12/12%',
-  },
-  {
-    name: '1',
-    validCount: '12/12%',
-  },
-  {
-    name: '1',
-    validCount: '12/12%',
-  },
-  {
-    name: '1',
-    validCount: '12/12%',
-  },
-  {
-    name: '1',
-    validCount: '12/12%',
-  },
-  {
-    name: '1',
-    validCount: '12/12%',
-  },
-  {
-    name: '1',
-    validCount: '12/12%',
-  },
-  {
-    name: '1',
-    validCount: '12/12%',
-  },
-  {
-    name: '1',
-    validCount: '12/12%',
-  },
-]
 
-const handleResize = () => {
-    if(showResult.value) {
-        // (document as any).getElementById('images').style.height = `${(document as any).getElementById('chromosome').clientHeight - 20}px`
-    }
-}
-watchEffect(() => {
-    if(showResult.value) {
-        nextTick(() => {
-          console.log(222,(document as any).getElementById('chromosome').clientHeight);
-          const tableHeight = tableRef.value.$el.clientHeight;
-    console.log('表格高度:', tableHeight);
-        //  (document as any).getElementById('images').style.height = `${(document as any).getElementById('chromosome').clientHeight - 20}px`    
-        })
-    }
-    window.addEventListener('resize', handleResize);
-})
-onUnmounted(() => {
-  window.removeEventListener('resize', handleResize);
-});
+  const handleResize = () => {
+      if(showResult.value) {
+          nextTick(() => {
+            setTimeout(() => {
+              resultData.value.forEach((item, index) => {
+                (document as any).getElementById('images'+index).style.height = `${(document as any).getElementById('chromosome'+index).clientHeight + 1}px`;   
+              })
+            }, 0);    
+          })
+      }
+  }
+  watchEffect(() => {
+  /*     if(showResult.value) {
+          nextTick(() => {
+            setTimeout(() => {
+              resultData.value.forEach((item, index) => {
+                (document as any).getElementById('images'+index).style.height = `${(document as any).getElementById('chromosome'+index).clientHeight + 1}px`;   
+              })
+            }, 0);    
+          })
+      } */
+      handleResize()
+      window.addEventListener('resize', handleResize);
+  })
+  onUnmounted(() => {
+    window.removeEventListener('resize', handleResize);
+  });
 </script>
 <style scoped lang="scss">
 @mixin layout($align-items, $justify-content){
@@ -592,8 +684,12 @@ onUnmounted(() => {
     border: 1px solid #efefef;
     border-radius: 5px;
     overflow-x: hidden;
+    :deep .el-scrollbar__view{
+      height: 100%;
+    }
     .choose{
-        @include layout(center, space-between)
+      height: calc(100% - 60px);
+       @include layout(center, space-between)
     }
     .result{
         @include size(calc(100% - 10px),auto);
@@ -640,9 +736,6 @@ onUnmounted(() => {
         overflow: auto;
         .item{
           @include size(calc(100% / 4 - 12px),auto);
-          margin: 5px;
-          border: 1px solid #efefef;
-          padding: 15px;
           box-sizing: border-box;
           text-align: center;
           img{
@@ -657,7 +750,7 @@ onUnmounted(() => {
         }
       }
       .table-info{
-        height: calc(100% - 65px);
+        height: calc(100% - 100px);
         overflow: auto;
       }
       .search-box{
@@ -670,7 +763,7 @@ onUnmounted(() => {
             height: 40px;
         }
         }
-        .search-btn{
+/*         .search-btn{
             @include layout(center,flex-end);
             button:first-child{
             margin-right: 10px;
@@ -678,6 +771,22 @@ onUnmounted(() => {
             .iconfont{
                 padding-right: 10px
             } 
+        } */
+        .search-btn{
+          button{
+            color: white;
+            border: 0;
+            height: 30px;
+            &:first-child{
+              background-color: green
+            }
+            &:last-child{
+              background-color: #fc9700;
+            }
+            &:hover{
+              opacity: 0.8;
+            }
+          }
         }
       }
     }
@@ -685,9 +794,10 @@ onUnmounted(() => {
       width: 100%;
     }
     .dialog-footer{
+      @include layout(center, space-between);
         text-align: right;
         padding-right: 5px;
-        padding-bottom: 20px;
+        height: 55px;
         button{
         color: white;
         height: 30px;

@@ -46,7 +46,7 @@
       <el-aside>
         <div class="bg"></div>
         <div class="nav">
-          <div class="item-index" :class="{active: chooseIndex===-1}" @click="navChoose(-1)">
+<!--           <div class="item-index" :class="{active: chooseIndex===-1}" @click="navChoose(-1)">
             <div class="index-inner">
               <i class="iconfont icon-shouye"></i>首页
             </div>
@@ -63,7 +63,23 @@
                 </div>
               </div>
             </el-collapse-item>
-          </el-collapse>
+          </el-collapse> -->
+
+          <div class="el-collapse">
+            <div class="el-collapse-item" v-for="(item,index) in navList" :class="{'is-active': chooseIndex===item.order}" :key="index">
+              <button class="el-collapse-item__header" @click="navChoose(item.order,'1',item)">
+                <span> <i class="iconfont" :class="item.icon"></i> {{ item.name }}</span><img src="../assets/arrow.png" class="arrow" :class="{'is-active': chooseIndex===item.order}" v-if="item.children"/>
+              </button>
+              <div class="el-collapse-item__wrap" v-if="item.children">
+                <div class="children">
+                  <div v-for="(child,i) in item.children" :key="child.name" class="child" :class="{active: chooseChildIndex===child.order}" @click="navChoose(child.order,'2',child)">
+                    <i class="iconfont" :class="child.icon"></i>
+                    {{ child.name }}
+                  </div>
+                </div>  
+              </div>
+            </div>
+          </div>
         </div>
       </el-aside>
       <el-container>
@@ -101,96 +117,126 @@
   <sorts-choose v-if="centerDialogVisible" @close="centerDialogVisible = false"></sorts-choose>
 </template>
 <script setup lang="ts">
+  import { number } from 'echarts/core';
 import SortsChoose from '../components/common/SortsChoose.vue'
-import {watchEffect,onMounted, ref} from "vue";
-import { useRouter } from 'vue-router'
-const router = useRouter()
-const userName = ref('admin')
-const centerDialogVisible = ref(false)
-const navList = ref([
-  {
-    name: '信息查询', 
-    icon: 'icon--zhuantishujufenxi',
-    children: [
-      {name: '指纹图谱查询', icon: 'icon-zhiwenshibie', path: '/fingerprint'},
-      {name: 'SNP标记查询', icon: 'icon-icon4', path: '/snpmarker'},
-      {name: '品种相似度分析', icon: 'icon-shujufenxi', path: '/varietysimilarityanalysis'},
-      {name: '品种差异分析', icon: 'icon-shujufenxi', path: '/varietydifferenceanalysis'},
-      {name: '杂交亲本预测', icon: 'icon-shujufenxi', path: '/predictionofhybridparents'}
-    ]
-  },
-  {
-    name: '账户信息管理', 
-    icon: 'icon-a-97_qiyezhanghuguanli',
-    children: [
-      {name: '企业账户管理', icon: 'icon-jichuxinxiguanli', path: '/information-management'}
-    ]
-  },
-])
-const sortList = ref([{
-  id: 1,
-  name: '玉米'
-},{
-  id: 1,
-  name: '大豆'
-},{
-  id: 1,
-  name: '小麦'
-},{
-  id: 1,
-  name: '水稻'
-},{
-  id: 1,
-  name: '棉花'
-},{
-  id: 1,
-  name: '油葵'
-},{
-  id: 1,
-  name: '向日葵'
-},{
-  id: 1,
-  name: '甜瓜'
-},{
-  id: 1,
-  name: '黄瓜'
-},{
-  id: 1,
-  name: '西瓜'
-},{
-  id: 1,
-  name: '番茄'
-}])
-const currentSort = ref<string>('玉米')
-const handleChange = (val: any) => {
-  console.log(11111,val)
-}
-const handleClick = (value: any) => {
-  console.log(222222,value)
-  currentSort.value = value.name
-}
-const handleChoose = () =>{
-  centerDialogVisible.value = true
-}
-const chooseIndex = ref(-1)
-const navChoose = (num: number, child?: any) => {
-  console.log(221,num)
-  chooseIndex.value = num
-  if(child){
-    console.log(child.path)
-    router.push(child.path)
-  } else {
-    router.push('/')
-    console.log(11111,document.getElementsByClassName('el-collapse-item'))
-    // document.getElementsByClassName('.el-collapse-item').classList.remove('is-active')
+  import {watchEffect,onMounted, ref} from "vue";
+  import { useRouter } from 'vue-router'
+import { set } from 'lodash';
+  const router = useRouter()
+  const userName = ref('admin')
+  const centerDialogVisible = ref(false)
+  const navList = ref([
+    {
+      name: '首页', 
+      icon: 'icon-shouye',
+      path: '/home',
+      label: 'home',
+      order: 0
+    },
+    {
+      name: '信息查询', 
+      icon: 'icon--zhuantishujufenxi',
+      path: '/fingerprint',
+      label: 'fingerprint',
+      order: 1,
+      children: [
+        {name: '指纹图谱查询', icon: 'icon-zhiwenshibie', path: '/fingerprint', label: 'fingerprint', order: 0},
+        {name: 'SNP标记查询', icon: 'icon-icon4', path: '/snpmarker', label: 'snpmarker', order: 1},
+        {name: '品种相似度分析', icon: 'icon-shujufenxi', path: '/varietysimilarityanalysis', label: 'varietysimilarityanalysis', order: 2},
+        {name: '品种差异分析', icon: 'icon-shujufenxi', path: '/varietydifferenceanalysis', label: 'varietydifferenceanalysis', order: 3},
+        {name: '杂交亲本预测', icon: 'icon-shujufenxi', path: '/predictionofhybridparents', label: 'predictionofhybridparents', order: 4}
+      ]
+    },
+    {
+      name: '账户信息管理', 
+      icon: 'icon-a-97_qiyezhanghuguanli',
+      path: '/information-management',
+      label: 'information-management',
+      order: 2,
+      children: [
+        {name: '企业账户管理', icon: 'icon-jichuxinxiguanli', path: '/information-management', label: 'information-management', order: 0}
+      ]
+    },
+  ])
+  const sortList = ref([{
+    id: 1,
+    name: '玉米'
+    },{
+      id: 1,
+      name: '大豆'
+    },{
+      id: 1,
+      name: '小麦'
+    },{
+      id: 1,
+      name: '水稻'
+    },{
+      id: 1,
+      name: '棉花'
+    },{
+      id: 1,
+      name: '油葵'
+    },{
+      id: 1,
+      name: '向日葵'
+    },{
+      id: 1,
+      name: '甜瓜'
+    },{
+      id: 1,
+      name: '黄瓜'
+    },{
+      id: 1,
+      name: '西瓜'
+    },{
+      id: 1,
+      name: '番茄'
+    }
+  ])
+  const currentSort = ref<string>('玉米')
+  const handleChange = (val: any) => {
+    console.log(11111,val)
   }
-}
-watchEffect(() => {
+  const handleClick = (value: any) => {
+    console.log(222222,value)
+    currentSort.value = value.name
+  }
+  const handleChoose = () =>{
+    centerDialogVisible.value = true
+  }
+  const chooseIndex = ref(1)
+  const chooseChildIndex = ref<number>()
+  const navChoose = (num: number, level: string, item: any) => {
+    if(level==='1'){
+      chooseIndex.value = num
+      router.push(item.path)
+      if(item.children){
+        chooseChildIndex.value = 0
+      }else{
+        chooseChildIndex.value = -1
+      }
+    }else if(level==='2'){
+      router.push(item.path)
+      chooseChildIndex.value = num
+    }
+  }
+  watchEffect(() => {
+    navList.value.forEach(item => {
+      if (router.currentRoute.value.path.includes(item.label)){
+          chooseIndex.value = item.order
+        }
+        if (item.children) {
+          item.children.forEach(child => {
+            if (router.currentRoute.value.path.includes(child.label)) {
+              chooseChildIndex.value = child.order
+            }
+          })
+        }
+    })
+  })
+  onMounted(() => {
 
-})
-onMounted(() => {
-
-})
+  })
 </script>
 <style scoped lang="scss">
 $color-red: #6d1d29;
@@ -267,7 +313,7 @@ $color-blue: #365baa;
       :deep .el-collapse{
         border-color: #ffffff57;
         border: 0;
-        padding: 0 10px;
+        padding: 10px;
         .el-collapse-item{
           margin-bottom: 10px;
         }
@@ -282,11 +328,29 @@ $color-blue: #365baa;
       }
       :deep .el-collapse-item__wrap{
         padding: 5px 0;
+        display: none;
+      }
+      .is-active{
+        .el-collapse-item__wrap{
+          display: block;
+          transition: all 0.3s ease;
+        }
       }
       :deep .el-collapse-item__header{
         height: 50px;
         border: 0;
         border-radius: 4px;
+        @include layout(center, space-between);
+        .arrow{
+          width: 16px;
+          height: 16px;
+          color: gainsboro;
+          transition: all 0.3s ease;
+          transform: rotate(0deg);
+        }
+        .arrow.is-active{
+          transform: rotate(90deg);
+        }
       }
       :deep button:hover {
         background-color: #ffffff2e;

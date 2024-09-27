@@ -33,7 +33,6 @@
 
                     </el-table>
                     </div>
-                    <el-pagination></el-pagination>
                 </div>
             </div>
             <div class="result" v-if="showResult">
@@ -76,6 +75,8 @@
                 </div>
             </div>           
             <div class="dialog-footer">
+                <el-pagination v-if="!showResult"></el-pagination>
+                <div v-if="showResult"></div>
                     <!-- <el-button v-if="!showResult"><i class="iconfont icon-p-footer"></i>清空面板</el-button> -->
                     <el-button v-if="!showResult" @click="showResult = true"><i class="iconfont icon-lujing-6"></i>比对</el-button>
                     <!-- <el-button v-if="!showResult" @click="showResult = true"><i class="iconfont icon-chanpinchaxun"></i>近似筛查</el-button> -->
@@ -815,8 +816,12 @@ onUnmounted(() => {
     border: 1px solid #efefef;
     border-radius: 5px;
     overflow-x: hidden;
+    :deep .el-scrollbar__view{
+      height: 100%;
+    }
     .choose{
-        @include layout(center, space-between)
+        @include layout(center, space-between);
+        height: calc(100% - 60px);
     }
     .result{
         @include size(calc(100% - 10px),auto);
@@ -879,7 +884,7 @@ onUnmounted(() => {
       }
       .table-info{
         width: 100%;
-        height: calc(100% - 65px);
+        height: calc(100% - 100px);
         overflow: auto;
       }
       .search-box{
@@ -892,7 +897,7 @@ onUnmounted(() => {
             height: 40px;
         }
         }
-        .search-btn{
+/*         .search-btn{
             @include layout(center,flex-end);
             button:first-child{
             margin-right: 10px;
@@ -900,6 +905,22 @@ onUnmounted(() => {
             .iconfont{
                 padding-right: 10px
             } 
+        } */
+        .search-btn{
+          button{
+            color: white;
+            border: 0;
+            height: 30px;
+            &:first-child{
+              background-color: green
+            }
+            &:last-child{
+              background-color: #fc9700;
+            }
+            &:hover{
+              opacity: 0.8;
+            }
+          }
         }
       }
     }
@@ -907,9 +928,10 @@ onUnmounted(() => {
       width: 100%;
     }
     .dialog-footer{
+        @include layout(center, space-between);
         text-align: right;
         padding-right: 5px;
-        padding-bottom: 20px;
+        height: 55px;
         button{
         color: white;
         height: 30px;

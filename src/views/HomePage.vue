@@ -46,7 +46,7 @@ const showUploadData = ref(false)
     {
       icon: 'icon-chanpinchaxun',
       title: 'SNP查询',
-      path: '/information-management',
+      path: '/snpmarker',
       disabled: false    
     },
   ])
