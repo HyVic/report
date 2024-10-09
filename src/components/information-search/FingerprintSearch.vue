@@ -14,7 +14,7 @@
           
           <el-scrollbar height="100%">
             <div class="search-result-snp20k common">
-              <div class="title">SNP20K</div>
+              <div class="title">SNP20K <span v-if="sortName">（{{ sortName }}）</span></div>
               <div class="result-content">
                 <div class="left">
                   <div class="all-info" id="all-info">
@@ -25,7 +25,10 @@
                   </div>
                   <div class="content common" id="images_content">
                     <div class="item">
-                      <img :src="allInfo.img" id="images" alt="">
+                      <el-scrollbar height="100%">
+                        <site-echarts status="0"></site-echarts>
+                        <site-heat-map></site-heat-map>
+                      </el-scrollbar>
                     </div>
                   </div>
                 </div>   
@@ -38,12 +41,31 @@
                         :data="ChromosometableData"
                         style="width: 100%"
                     >
-                        <!-- <el-table-column type="index" label="序号" width="60" /> -->
-                        <el-table-column property="number" label="染色体"/>
-                        <el-table-column property="validCount" label="有效位点数量/比列"/>
-                        <el-table-column property="referCount" label="Refer位点数量/比列" />
-                        <el-table-column property="altCount" label="Alt位点数量/比列" />
-                        <el-table-column property="mixCount" label="杂合位点数量/比列" />
+                        <el-table-column property="number" label="染色体" width="70">
+                          <template #default="scope">
+                              <div class="common_cell" @click="getCellDetail('all')">{{ scope.row.number }}</div>
+                          </template>
+                        </el-table-column>
+                        <el-table-column property="validCount" label="有效位点数量/比列">
+                          <template #default="scope">
+                              <div class="common_cell" @click="getCellDetail('all')">{{ scope.row.validCount }}</div>
+                          </template>
+                        </el-table-column>
+                        <el-table-column property="referCount" label="Refer位点数量/比列" >
+                          <template #default="scope">
+                              <div class="common_cell" @click="getCellDetail('refer')">{{ scope.row.referCount }}</div>
+                          </template>
+                        </el-table-column>
+                        <el-table-column property="altCount" label="Alt位点数量/比列" >
+                          <template #default="scope">
+                              <div class="common_cell" @click="getCellDetail('alt')">{{ scope.row.altCount }}</div>
+                          </template>
+                        </el-table-column>
+                        <el-table-column property="mixCount" label="杂合位点数量/比列" >
+                          <template #default="scope">
+                              <div class="common_cell" @click="getCellDetail('hybrid')">{{ scope.row.mixCount }}</div>
+                          </template>
+                        </el-table-column>
                     </el-table>
                     </el-scrollbar>
                 </div>
@@ -84,323 +106,336 @@
           </el-scrollbar>
         </div>
     </div>
+    <table-cell-detail v-if="showCellDetail" @close="showCellDetail = false"></table-cell-detail>
 </template>
     
 <script setup lang="ts">
-import { ref, watchEffect, onUnmounted, nextTick } from 'vue';
-const searchName = ref('');
-const searchNumber = ref('');
-const submitSearch = () => {}
-const reset = () => {}
-import image from '../../assets/lixinguan-11.png'
-const allInfo = ref({
-  validCount: '19400/97%',
-  referCount: '12780/64%',
-  altCount: '6581/33%',
-  mixCount: '39/0.1%',
-  img: image
-})
-interface SNPInfo {
-  number:number,
-  name:string,
-  type:string,
-}
-const tableData:SNPInfo[] = [
-  {
-    number: 1,
-    name: '位点1',
-    type: 'SNP'
-  },
-  {
-    number: 1,
-    name: '位点1',
-    type: 'SNP'
-  },
-  {
-    number: 1,
-    name: '位点1',
-    type: 'SNP'
-  },
-  {
-    number: 1,
-    name: '位点1',
-    type: 'SNP'
-  },
-  {
-    number: 1,
-    name: '位点1',
-    type: 'SNP'
-  },
-  {
-    number: 1,
-    name: '位点1',
-    type: 'SNP'
-  },
-  {
-    number: 1,
-    name: '位点1',
-    type: 'SNP'
-  },
-  {
-    number: 1,
-    name: '位点1',
-    type: 'SNP'
-  },
-  {
-    number: 1,
-    name: '位点1',
-    type: 'SNP'
-  },
-  {
-    number: 1,
-    name: '位点1',
-    type: 'SNP'
-  },
-  {
-    number: 1,
-    name: '位点1',
-    type: 'SNP'
-  },
-  {
-    number: 1,
-    name: '位点1',
-    type: 'SNP'
-  },
-  {
-    number: 1,
-    name: '位点1',
-    type: 'SNP'
-  },
-  {
-    number: 1,
-    name: '位点1',
-    type: 'SNP'
-  },
-  {
-    number: 1,
-    name: '位点1',
-    type: 'SNP'
-  },
-  {
-    number: 1,
-    name: '位点1',
-    type: 'SNP'
-  },
-  {
-    number: 1,
-    name: '位点1',
-    type: 'SNP'
-  },
-  {
-    number: 1,
-    name: '位点1',
-    type: 'SNP'
-  },
-  {
-    number: 1,
-    name: '位点1',
-    type: 'SNP'
-  },
-  {
-    number: 1,
-    name: '位点1',
-    type: 'SNP'
-  },
-  {
-    number: 1,
-    name: '位点1',
-    type: 'SNP'
-  },
-  {
-    number: 1,
-    name: '位点1',
-    type: 'SNP'
-  },
-  {
-    number: 1,
-    name: '位点1',
-    type: 'SNP'
-  },
-  {
-    number: 1,
-    name: '位点1',
-    type: 'SNP'
-  },
-]
-import img from '../../assets/ssr.png'
-import { number } from 'echarts';
-interface ChromosomeInfo {
-  number:string,
-  validCount:string,
-  referCount:string,
-  altCount:string,
-  mixCount:string,
-}
-const ChromosometableData: ChromosomeInfo[] = [
-  {
-    number: '1',
-    validCount: '2358/79.9%',
-    referCount: '1677/57%',
-    altCount: '1160/39%',
-    mixCount: '3/0.1%',
-  },
-  {
-    number: '2',
-    validCount: '1724/74%',
-    referCount: '1210/52%',
-    altCount: '1019/44%',
-    mixCount: '8/00.3%',
-  },
-  {
-    number: '3',
-    validCount: '1653/74%',
-    referCount: '1407/63%',
-    altCount: '758/34%',
-    mixCount: '2/0.08%',
-  },
-  {
-    number: '4',
-    validCount: '1763/74%',
-    referCount: '2028/86%',
-    altCount: '304/13%',
-    mixCount: '1/0.04%',
-  },
-  {
-    number: '5',
-    validCount: '1510/72%',
-    referCount: '1369/65%',
-    altCount: '676/32%',
-    mixCount: '3/00.1%',
-  },
-  {
-    number: '6',
-    validCount: '954/62%',
-    referCount: '980/63%',
-    altCount: '520/33%',
-    mixCount: '5/0.3%',
-  },
-  {
-    number: '7',
-    validCount: '1143/66%',
-    referCount: '1246/72%',
-    altCount: '448/26%',
-    mixCount: '3/0.1%',
-  },
-  {
-    number: '8',
-    validCount: '1145/65%',
-    referCount: '979/56%',
-    altCount: '703/40%',
-    mixCount: '7/0.4%',
-  },
-  {
-    number: '9',
-    validCount: '935/61%',
-    referCount: '811/53%',
-    altCount: '644/42%',
-    mixCount: '5/0.3%',
-  },
-  {
-    number: '10',
-    validCount: '869/59%',
-    referCount: '1073/73%',
-    altCount: '349/24%',
-    mixCount: '2/0.1%',
-  },
-]
-const ssrList = ref([
-  {
-    img: img, 
-    name: 'bnlg439w1',
-    number: 'P01',
-    sortName: '先玉335',
-    sortNumber: 'BGG253-2'
-  },
-  {
-    img: img, 
-    name: 'bnlg439w1',
-    number: 'P01',
-    sortName: '先玉335',
-    sortNumber: 'BGG253-2'
-  },
-  {
-    img: img, 
-    name: 'bnlg439w1',
-    number: 'P01',
-    sortName: '先玉335',
-    sortNumber: 'BGG253-2'
-  },
-  {
-    img: img, 
-    name: 'bnlg439w1',
-    number: 'P01',
-    sortName: '先玉335',
-    sortNumber: 'BGG253-2'
-  },
-  {
-    img: img, 
-    name: 'bnlg439w1',
-    number: 'P01',
-    sortName: '先玉335',
-    sortNumber: 'BGG253-2'
-  },
-  {
-    img: img, 
-    name: 'bnlg439w1',
-    number: 'P01',
-    sortName: '先玉335',
-    sortNumber: 'BGG253-2'
-  },
-  {
-    img: img, 
-    name: 'bnlg439w1',
-    number: 'P01',
-    sortName: '先玉335',
-    sortNumber: 'BGG253-2'
-  },
-  {
-    img: img, 
-    name: 'bnlg439w1',
-    number: 'P01',
-    sortName: '先玉335',
-    sortNumber: 'BGG253-2'
-  },
-  {
-    img: img, 
-    name: 'bnlg439w1',
-    number: 'P01',
-    sortName: '先玉335',
-    sortNumber: 'BGG253-2'
-  },
-  {
-    img: img, 
-    name: 'bnlg439w1',
-    number: 'P01',
-    sortName: '先玉335',
-    sortNumber: 'BGG253-2'
-  },
-  {
-    img: img, 
-    name: 'bnlg439w1',
-    number: 'P01',
-    sortName: '先玉335',
-    sortNumber: 'BGG253-2'
-  },
-])
-const handleResize = () => {
-  // (document as any).getElementById('images_content').style.height = `${(document as any).getElementById('all-info').clientHeight - 20}px`;
-  // (document as any).getElementById('images').style.height = `${(document as any).getElementById('all-info').clientHeight - 50}px`
-}
-watchEffect(() => {
-  nextTick(() => {
-    // (document as any).getElementById('images_content').style.height = `${(document as any).getElementById('all-info').clientHeight - 20}px`;
-    // (document as any).getElementById('images').style.height = `${(document as any).getElementById('all-info').clientHeight - 70}px`    
+  import TableCellDetail from '../information-search/TableCellDetail.vue'
+  import SiteEcharts from './SiteEcharts.vue'
+  import SiteHeatMap from './SiteHeatMap.vue';
+  import { ref, watchEffect, onUnmounted, nextTick } from 'vue';
+  const searchName = ref('');
+  const searchNumber = ref('');
+  const sortName = ref('');
+  const showCellDetail = ref(false);
+  const submitSearch = () => {
+    sortName.value = searchName.value;
+  }
+  const reset = () => {
+    sortName.value = ''
+    searchName.value = ''
+  }
+
+  const allInfo = ref({
+    validCount: '19400/97%',
+    referCount: '12780/64%',
+    altCount: '6581/33%',
+    mixCount: '39/0.1%'
   })
-  window.addEventListener('resize', handleResize);
-})
-onUnmounted(() => {
-  window.removeEventListener('resize', handleResize);
-});
+  interface SNPInfo {
+    number:number,
+    name:string,
+    type:string,
+  }
+  const tableData:SNPInfo[] = [
+    {
+      number: 1,
+      name: '位点1',
+      type: 'SNP'
+    },
+    {
+      number: 1,
+      name: '位点1',
+      type: 'SNP'
+    },
+    {
+      number: 1,
+      name: '位点1',
+      type: 'SNP'
+    },
+    {
+      number: 1,
+      name: '位点1',
+      type: 'SNP'
+    },
+    {
+      number: 1,
+      name: '位点1',
+      type: 'SNP'
+    },
+    {
+      number: 1,
+      name: '位点1',
+      type: 'SNP'
+    },
+    {
+      number: 1,
+      name: '位点1',
+      type: 'SNP'
+    },
+    {
+      number: 1,
+      name: '位点1',
+      type: 'SNP'
+    },
+    {
+      number: 1,
+      name: '位点1',
+      type: 'SNP'
+    },
+    {
+      number: 1,
+      name: '位点1',
+      type: 'SNP'
+    },
+    {
+      number: 1,
+      name: '位点1',
+      type: 'SNP'
+    },
+    {
+      number: 1,
+      name: '位点1',
+      type: 'SNP'
+    },
+    {
+      number: 1,
+      name: '位点1',
+      type: 'SNP'
+    },
+    {
+      number: 1,
+      name: '位点1',
+      type: 'SNP'
+    },
+    {
+      number: 1,
+      name: '位点1',
+      type: 'SNP'
+    },
+    {
+      number: 1,
+      name: '位点1',
+      type: 'SNP'
+    },
+    {
+      number: 1,
+      name: '位点1',
+      type: 'SNP'
+    },
+    {
+      number: 1,
+      name: '位点1',
+      type: 'SNP'
+    },
+    {
+      number: 1,
+      name: '位点1',
+      type: 'SNP'
+    },
+    {
+      number: 1,
+      name: '位点1',
+      type: 'SNP'
+    },
+    {
+      number: 1,
+      name: '位点1',
+      type: 'SNP'
+    },
+    {
+      number: 1,
+      name: '位点1',
+      type: 'SNP'
+    },
+    {
+      number: 1,
+      name: '位点1',
+      type: 'SNP'
+    },
+    {
+      number: 1,
+      name: '位点1',
+      type: 'SNP'
+    },
+  ]
+  import img from '../../assets/ssr.png'
+  interface ChromosomeInfo {
+    number:string,
+    validCount:string,
+    referCount:string,
+    altCount:string,
+    mixCount:string,
+  }
+  const ChromosometableData: ChromosomeInfo[] = [
+    {
+      number: '1',
+      validCount: '2358/79.9%',
+      referCount: '1677/57%',
+      altCount: '1160/39%',
+      mixCount: '3/0.1%',
+    },
+    {
+      number: '2',
+      validCount: '1724/74%',
+      referCount: '1210/52%',
+      altCount: '1019/44%',
+      mixCount: '8/00.3%',
+    },
+    {
+      number: '3',
+      validCount: '1653/74%',
+      referCount: '1407/63%',
+      altCount: '758/34%',
+      mixCount: '2/0.08%',
+    },
+    {
+      number: '4',
+      validCount: '1763/74%',
+      referCount: '2028/86%',
+      altCount: '304/13%',
+      mixCount: '1/0.04%',
+    },
+    {
+      number: '5',
+      validCount: '1510/72%',
+      referCount: '1369/65%',
+      altCount: '676/32%',
+      mixCount: '3/00.1%',
+    },
+    {
+      number: '6',
+      validCount: '954/62%',
+      referCount: '980/63%',
+      altCount: '520/33%',
+      mixCount: '5/0.3%',
+    },
+    {
+      number: '7',
+      validCount: '1143/66%',
+      referCount: '1246/72%',
+      altCount: '448/26%',
+      mixCount: '3/0.1%',
+    },
+    {
+      number: '8',
+      validCount: '1145/65%',
+      referCount: '979/56%',
+      altCount: '703/40%',
+      mixCount: '7/0.4%',
+    },
+    {
+      number: '9',
+      validCount: '935/61%',
+      referCount: '811/53%',
+      altCount: '644/42%',
+      mixCount: '5/0.3%',
+    },
+    {
+      number: '10',
+      validCount: '869/59%',
+      referCount: '1073/73%',
+      altCount: '349/24%',
+      mixCount: '2/0.1%',
+    },
+  ]
+  const ssrList = ref([
+    {
+      img: img, 
+      name: 'bnlg439w1',
+      number: 'P01',
+      sortName: '先玉335',
+      sortNumber: 'BGG253-2'
+    },
+    {
+      img: img, 
+      name: 'bnlg439w1',
+      number: 'P01',
+      sortName: '先玉335',
+      sortNumber: 'BGG253-2'
+    },
+    {
+      img: img, 
+      name: 'bnlg439w1',
+      number: 'P01',
+      sortName: '先玉335',
+      sortNumber: 'BGG253-2'
+    },
+    {
+      img: img, 
+      name: 'bnlg439w1',
+      number: 'P01',
+      sortName: '先玉335',
+      sortNumber: 'BGG253-2'
+    },
+    {
+      img: img, 
+      name: 'bnlg439w1',
+      number: 'P01',
+      sortName: '先玉335',
+      sortNumber: 'BGG253-2'
+    },
+    {
+      img: img, 
+      name: 'bnlg439w1',
+      number: 'P01',
+      sortName: '先玉335',
+      sortNumber: 'BGG253-2'
+    },
+    {
+      img: img, 
+      name: 'bnlg439w1',
+      number: 'P01',
+      sortName: '先玉335',
+      sortNumber: 'BGG253-2'
+    },
+    {
+      img: img, 
+      name: 'bnlg439w1',
+      number: 'P01',
+      sortName: '先玉335',
+      sortNumber: 'BGG253-2'
+    },
+    {
+      img: img, 
+      name: 'bnlg439w1',
+      number: 'P01',
+      sortName: '先玉335',
+      sortNumber: 'BGG253-2'
+    },
+    {
+      img: img, 
+      name: 'bnlg439w1',
+      number: 'P01',
+      sortName: '先玉335',
+      sortNumber: 'BGG253-2'
+    },
+    {
+      img: img, 
+      name: 'bnlg439w1',
+      number: 'P01',
+      sortName: '先玉335',
+      sortNumber: 'BGG253-2'
+    },
+  ])
+  const getCellDetail = (type:string) => {
+    console.log(type)
+    showCellDetail.value = true
+  }
+  const handleResize = () => {
+    // (document as any).getElementById('images_content').style.height = `${(document as any).getElementById('all-info').clientHeight - 20}px`;
+    // (document as any).getElementById('images').style.height = `${(document as any).getElementById('all-info').clientHeight - 50}px`
+  }
+  watchEffect(() => {
+    nextTick(() => {
+      // (document as any).getElementById('images_content').style.height = `${(document as any).getElementById('all-info').clientHeight - 20}px`;
+      // (document as any).getElementById('images').style.height = `${(document as any).getElementById('all-info').clientHeight - 70}px`    
+    })
+    window.addEventListener('resize', handleResize);
+  })
+  onUnmounted(() => {
+    window.removeEventListener('resize', handleResize);
+  });
 </script>
 <style scoped lang="scss">
 @mixin layout($align-items, $justify-content){
@@ -569,15 +604,29 @@ onUnmounted(() => {
           height: 462px;
           box-sizing: border-box;
           .item{
-            width: calc(100% - 12px);
+            width: calc(100% - 1px);
             height: 100%;
             @include layout(center,center);
-            img{
-              width: auto;
-              max-width: 100%;
-              max-height: 100%;
-              /* width: 100%;
-              height: auto !important; */
+            :deep .el-scrollbar__view{
+              display: flex;    
+              align-items: flex-start;
+              @media screen and (min-width: 2001px){
+                flex-direction: row;
+               /*  img{
+                  width: auto;
+                  max-width: 50%;
+                  max-height: 100%;
+                } */
+              }
+              @media screen and (max-width: 2000px){
+                flex-direction: column;
+               /*  img{
+                  width: auto;
+                  max-width: 90%;
+                  max-height: 50%;
+                  margin: auto;
+                } */
+              }
             }
           }
         }
@@ -586,15 +635,25 @@ onUnmounted(() => {
             height: 460px;
             .table-info{
               height: 100%;
+              :deep .el-table td.el-table__cell div, :deep .el-table--enable-row-transition .el-table__body td.el-table__cell{
+                padding: 0;
+              }
+              .common_cell{
+                cursor: pointer;
+                padding: 7px 12px !important;
+                &:hover{
+                  background-color: #e2edfb;
+                } 
+              }
             } 
         }
         @media screen and (min-width: 1901px){
           .left{
-            width: 55%;
+            width: 100%;
           }
           .chromosome{
             height: 460px;
-            width: calc(45% - 13px);
+            width: calc(100% - 13px);
           }
         }
         @media screen and (max-width: 1900px){

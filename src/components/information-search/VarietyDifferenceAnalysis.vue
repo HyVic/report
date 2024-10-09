@@ -34,7 +34,7 @@
                         </el-table>
                       </el-scrollbar>
                     </div>
-                    <el-pagination></el-pagination>
+                    <el-pagination :pageNum="pagination.pageNum" :page-size="pagination.pageSize" :total="pagination.total" @current-change="handleCurrentChange"></el-pagination>
                 </div>
                 <div class="search-result-snp common">
                     <div class="search-box">
@@ -87,7 +87,10 @@
                     </div>
                     <div class="content common" id="images">
                       <div class="item">
-                        <img :src="allInfo.img" alt="">
+                        <!-- <img :src="allInfo.img" alt=""> -->
+                        <el-scrollbar height="100%">
+                          <site-echarts status="1"></site-echarts>
+                        </el-scrollbar>
                       </div>
                     </div>
                   </div>
@@ -127,7 +130,12 @@
   import type { TableInstance } from 'element-plus'
   import ElPagination from '../common/ElPagination.vue'
   import { ref, onUnmounted, watchEffect, nextTick } from 'vue';
-  import { set } from 'lodash';
+  import SiteEcharts from './SiteEcharts.vue'
+  const pagination = ref<any>({
+    pageNum: 1,
+    pageSize: 10,
+    total: 50
+  })
   const uploadData = ref({
       searchName: '',
       searchNumber: ''
@@ -702,7 +710,7 @@
             box-sizing: border-box;
             // width: 100%;
             .item{
-              width: calc(100% - 12px);
+              width: 100%;
               @include layout(flex-start,center);
               img{
                 width: 100%;
@@ -743,6 +751,9 @@
               }
               .content{
                 width: 78%;
+                :deep .el-scrollbar__view{
+                  height: unset !important;
+                }
               }
             }
             .chromosome{
@@ -783,13 +794,10 @@
         height: calc(100% - 65px);
         display: flex;
         flex-wrap: wrap;
-        padding: 10px;
-        overflow: auto;
+        // padding: 10px;
+        overflow: hidden;
         .item{
           @include size(calc(100% / 4 - 12px),auto);
-          margin: 5px;
-          // border: 1px solid #efefef;
-          padding: 15px;
           box-sizing: border-box;
           text-align: center;
           img{

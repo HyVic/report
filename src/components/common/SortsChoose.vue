@@ -23,13 +23,6 @@
                 <el-table-column align="center" label="操作">
                     <template #default="scope">
                         <i class="iconfont icon-15qingkong-1"></i>
-                        <!-- <el-button
-                            size="small"
-                            type="danger"
-                            @click="handleDelete(scope.$index, scope.row)"
-                        >
-                        <i class="iconfont icon-15qingkong-1"></i>
-                        </el-button> -->
                     </template>
                 </el-table-column>
             </el-table>

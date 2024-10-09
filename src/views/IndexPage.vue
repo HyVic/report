@@ -117,11 +117,9 @@
   <sorts-choose v-if="centerDialogVisible" @close="centerDialogVisible = false"></sorts-choose>
 </template>
 <script setup lang="ts">
-  import { number } from 'echarts/core';
-import SortsChoose from '../components/common/SortsChoose.vue'
+  import SortsChoose from '../components/common/SortsChoose.vue'
   import {watchEffect,onMounted, ref} from "vue";
   import { useRouter } from 'vue-router'
-import { set } from 'lodash';
   const router = useRouter()
   const userName = ref('admin')
   const centerDialogVisible = ref(false)

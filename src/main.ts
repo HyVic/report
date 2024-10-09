@@ -6,6 +6,7 @@ import '../public/iconfont/iconfont.css'
 import { createPinia } from 'pinia'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import VueApexCharts from 'vue3-apexcharts'
 // import * as echarts from 'echarts';
 
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
@@ -13,6 +14,7 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 const app = createApp(App)
 app.use(router)
 app.use(createPinia())
+app.use(VueApexCharts)
 app.use(ElementPlus,{
     locale: zhCn,
   })

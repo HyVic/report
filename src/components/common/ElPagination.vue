@@ -15,6 +15,11 @@
 </template>
 <script setup lang="ts">
     import { ref } from 'vue';
+    const props = defineProps({
+        pageNum: Number,
+        pageSize: Number,
+        total: Number
+    })
     const pagination = ref({
         pageNum:1,
         pageSize:10,
