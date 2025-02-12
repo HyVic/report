@@ -38,7 +38,7 @@
                     <el-table 
                         stripe 
                         ref="multipleTableRef"
-                        :data="ChromosometableData"
+                        :data="sheetTableData"
                         style="width: 100%"
                     >
                         <el-table-column property="number" label="染色体" width="70">
@@ -113,7 +113,8 @@
   import TableCellDetail from '../information-search/TableCellDetail.vue'
   import SiteEcharts from './SiteEcharts.vue'
   import SiteHeatMap from './SiteHeatMap.vue';
-  import { ref, watchEffect, onUnmounted, nextTick } from 'vue';
+  import { ref, watchEffect, onUnmounted, nextTick, onMounted } from 'vue';
+
   const searchName = ref('');
   const searchNumber = ref('');
   const sortName = ref('');
@@ -125,7 +126,6 @@
     sortName.value = ''
     searchName.value = ''
   }
-
   const allInfo = ref({
     validCount: '19400/97%',
     referCount: '12780/64%',
@@ -260,13 +260,7 @@
     },
   ]
   import img from '../../assets/ssr.png'
-  interface ChromosomeInfo {
-    number:string,
-    validCount:string,
-    referCount:string,
-    altCount:string,
-    mixCount:string,
-  }
+
   const ChromosometableData: ChromosomeInfo[] = [
     {
       number: '1',
@@ -433,8 +427,28 @@
     })
     window.addEventListener('resize', handleResize);
   })
+/*   import axios from 'axios'
+  import * as XLSX from 'xlsx'; */
+  import {transformSheets,commonSheet} from '../../utils/read_xlsx'
+  interface ChromosomeInfo {
+    number:string,
+    validCount:string,
+    referCount:string,
+    altCount:string,
+    mixCount:string,
+  }
+  const sheetTableData = ref<ChromosomeInfo[]>([])
+  onMounted(() => {
+    console.log(111111,commonSheet("/chrom.xlsx"))
+    let arr = commonSheet('/chrom.xlsx')
+    setTimeout(async () => {
+      sheetTableData.value = arr
+      console.log(12,sheetTableData.value)
+    },100)
+  })
   onUnmounted(() => {
     window.removeEventListener('resize', handleResize);
+
   });
 </script>
 <style scoped lang="scss">
