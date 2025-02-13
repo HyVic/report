@@ -7,15 +7,16 @@ export default defineConfig({
   css: {
     devSourcemap: true
   },
-  /* server: {
+  server: {
+    open: true,
     proxy: {
       '/api': {
-        target: 'https://echarts.apache.org/examples',
+        target: 'http://192.168.3.88: 8081',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
           // '^/echarts': ''
         
       }
     }
-  } */
+  }
 })

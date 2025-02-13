@@ -14,6 +14,7 @@
           ref="multipleTableRef"
           :data="tableData"
           style="width: 100%"
+          border
         >
           <el-table-column type="index" label="序号" width="80"/>
           <el-table-column property="primerName" label="引物名称" />

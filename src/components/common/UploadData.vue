@@ -10,10 +10,10 @@
           <el-form-item v-if="sort=='carousel'" label="外链：">
             <el-input v-model="info.link" />
           </el-form-item>
-          <el-form-item v-if="sort=='service' || sort=='product' || sort=='partner'" label="标题：">
+          <el-form-item v-if="sort=='service' || sort=='product' || sort=='partner' || sort=='ClassA'" label="标题：">
             <el-input v-model="info.title" />
           </el-form-item>
-          <el-form-item v-if="sort=='service'" label="简述：">
+          <el-form-item v-if="sort=='service' || sort=='ClassA'" label="简述：">
             <el-input type="textarea" v-model="info.describe" />
           </el-form-item>
           <el-form-item label="图片：">
@@ -22,6 +22,7 @@
           <el-form-item label="图标：" v-if="sort=='product'">
             <Uploadimage :image="info.icon" :icon-class="'icon'"></Uploadimage>
           </el-form-item>
+
         </el-form>
       </div>
       <div class="dialog-footer">
@@ -50,7 +51,7 @@ const submit = () => {
   console.log(info.value);
   emits("close");
 };
-const info = ref({
+const info = ref<any>({
   image: "",
   icon: "",
   link: "",

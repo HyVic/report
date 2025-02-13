@@ -2,17 +2,17 @@ import { createRouter, createWebHistory } from "vue-router";
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    {
+/*     {
       path: "/",
       name: "LoginPage",
       component: () => import("../views/LoginPage.vue"),
       meta: { title: "登录" },
-    },
+    }, */
     {
-      path: "/index",
+      path: "/",
       name: "IndexPage",
       component: () => import("../views/IndexPage.vue"),
-      meta: { keepAlive: true },
+      meta: { title: "首页" },
       redirect: {
         name: "CarouselPage",
       },
@@ -106,55 +106,43 @@ const router = createRouter({
           ],
         },
         {
-          path: "/fingerprint",
-          name: "FingerprintSearch",
-          meta: { title: "指纹识别" },
-          component: () =>
-            import("../components/information-search/FingerprintSearch.vue"),
+          path: "/product-center",
+          name: "ProductSort",
+          meta: { title: "产品中心" },
+          redirect: {
+            name: "ProductSort",
+          },
+          children: [
+            {
+              path: "/product-center/product-sort",
+              name: "ProductSort",
+              meta: { title: "类别管理" },
+              component: () => import("../components/product-center/ProductSort.vue"),
+            },
+            {
+              path: "/product-center/product-info",
+              name: "ProductInfo",
+              meta: { title: "信息管理" },
+              component: () => import("../components/product-center/ProductInfo.vue"),
+            }
+          ]
         },
         {
-          path: "/snpmarker",
-          name: "SNPMarkerSearch",
-          meta: { title: "SNP标记" },
-          component: () =>
-            import("../components/information-search/SNPMarkerSearch.vue"),
-        },
-        {
-          path: "/varietysimilarityanalysis",
-          name: "VarietySimilarityAnalysis",
-          meta: { title: "品种相似度分析" },
-          component: () =>
-            import(
-              "../components/information-search/VarietySimilarityAnalysis.vue"
-            ),
-        },
-        {
-          path: "/varietydifferenceanalysis",
-          name: "VarietyDifferenceAnalysis",
-          meta: { title: "品种差异分析" },
-          component: () =>
-            import(
-              "../components/information-search/VarietyDifferenceAnalysis.vue"
-            ),
-        },
-        {
-          path: "/predictionofhybridparents",
-          name: "PredictionOfHybridParents",
-          meta: { title: "杂交亲本预测" },
-          component: () =>
-            import(
-              "../components/information-search/PredictionOfHybridParents.vue"
-            ),
-        },
-        /*         {
-          path: "/information-management",
-          name: "AccountInformationManagement",
-          meta: { title: "企业账户管理" },
-          component: () =>
-            import(
-              "../components/information-management/AccountInformationManagement.vue"
-            ),
-        }, */
+          path: "/customer-answer",
+          name: "AnimalRequirements",
+          meta: { title: "客户解答" },
+          redirect: {
+            name: "AnimalRequirements",
+          },
+          children: [
+            {
+              path: "/customer-answer/animal-requirements",
+              name: "AnimalRequirements",
+              component: () =>
+                import("../components/customer-answer/AnimalRequirements.vue"),
+            },
+          ]
+        } 
       ],
     },
   ],

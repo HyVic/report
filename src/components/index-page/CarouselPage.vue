@@ -2,72 +2,37 @@
   <div class="fingerprint-search">
     <div class="search-box">
       <div class="search-btn">
-        <el-button @click="AddCarousel"
-          ><i class="iconfont icon-xinzeng"></i>新增</el-button
-        >
+        <el-button @click="AddCarousel"><i class="iconfont icon-xinzeng"></i>新增</el-button>
       </div>
     </div>
     <div class="search-result">
       <div class="dialog-basic-info common-cont">
-        <el-table
-          stripe
-          ref="multipleTableRef"
-          :data="tableData"
-          style="width: 100%"
-        >
+        <el-table stripe ref="multipleTableRef" :data="tableData" style="width: 100%" border>
           <el-table-column type="index" label="序号" width="150" />
           <el-table-column property="link" label="外部链接" />
           <el-table-column property="image" label="图片">
             <template #default="scope">
               <!-- <img class="img_size" :src="scope.row.image" alt="" /> -->
-              <el-image
-                class="img_size"
-                :src="scope.row.image"
-                :zoom-rate="1.2"
-                :max-scale="7"
-                :min-scale="0.2"
-                :initial-index="4"
-                :preview-src-list="[scope.row.image]"
-                fit="cover"
-                :preview-teleported="true"
-              />
+              <el-image class="img_size" :src="scope.row.image" :zoom-rate="1.2" :max-scale="7" :min-scale="0.2" :initial-index="4" :preview-src-list="[scope.row.image]" fit="cover" :preview-teleported="true" />
             </template>
           </el-table-column>
           <el-table-column align="center" label="操作">
             <template #default="scope">
-              <i
-                class="iconfont icon-bianji edit"
-                titlt="编辑"
-                @click="handleClick(scope.row, 'edit')"
-              ></i>
-              <i
-                class="iconfont icon-shanchu delete"
-                titlt="删除"
-                @click="handleClick(scope.row, 'delete')"
-              ></i>
+              <i class="iconfont icon-bianji edit" titlt="编辑" @click="handleClick(scope.row, 'edit')"></i>
+              <i class="iconfont icon-shanchu delete" titlt="删除" @click="handleClick(scope.row, 'delete')"></i>
             </template>
           </el-table-column>
         </el-table>
       </div>
     </div>
-    <el-pagination
-      :pageNum="pagination.pageNum"
-      :page-size="pagination.pageSize"
-      :total="pagination.total"
-      @current-change="handlePagination"
-    ></el-pagination>
+    <el-pagination :pageNum="pagination.pageNum" :page-size="pagination.pageSize" :total="pagination.total" @current-change="handlePagination"></el-pagination>
   </div>
-  <EditCarousel
-    v-if="showEditCarouselVisible"
-    :type="dialog.type"
-    :title="dialog.title"
-    :sort="dialog.sort"
-    :row-data="rowData"
-    @close="showEditCarouselVisible = false"
-  ></EditCarousel>
+  <EditCarousel v-if="showEditCarouselVisible" :type="dialog.type" :title="dialog.title" :sort="dialog.sort" :row-data="rowData" @close="showEditCarouselVisible = false"></EditCarousel>
+  <practice :show-add="showAdd"></practice>
 </template>
 <script setup lang="ts">
 import ElPagination from "../common/ElPagination.vue";
+import practice from "../common/practice.vue";
 import { ref } from "vue";
 import image from "../../assets/service-bg.jpg";
 import image2 from "../../assets/product-bg.jpg";
@@ -120,12 +85,13 @@ const handlePagination = (currentPage: any) => {
 const dialog = ref<any>({
   type: "",
   title: "",
-  sort: 'carousel'
+  sort: "carousel",
 });
 const rowData = ref<any>();
 const showEditCarouselVisible = ref(false);
+const showAdd = ref(false);
 const AddCarousel = () => {
-  showEditCarouselVisible.value = true;
+  showAdd.value = true;
   dialog.value.type = "add";
   dialog.value.title = "新增轮播图";
 };
@@ -209,7 +175,7 @@ const AddCarousel = () => {
 :deep .el-table th.el-table__cell {
   color: #656565 !important;
 }
-:deep .el-table .cell{
+:deep .el-table .cell {
   display: flex;
   align-items: center;
 }

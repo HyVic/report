@@ -17,10 +17,10 @@
         <td class="title">{{item.title}}</td>
         <td class="content" v-if="index==0"><input v-model="item.content" :placeholder="'请输入'+item.title" :disabled="!isEdit" /></td>
         <td class="content date" v-else-if="index==1">
-          <el-date-picker v-model="item.content" type="date" :placeholder="'请输入'+item.title" placement="bottom-start" :disabled="!isEdit" />
+          <el-date-picker v-model="item.content" format="YYYY-MM-DD" type="date" :placeholder="'请输入'+item.title" placement="bottom-start" :disabled="!isEdit" />
         </td>
         <td class="content" v-else>
-          <editor-page :is-edit="isEdit" :type="type" ref="editorPage"></editor-page>
+          <editor-page :is-edit="isEdit" :type="type" ref="editorPage" :cont="item.content"></editor-page>
         </td>
       </tr>
     </table>
@@ -30,48 +30,50 @@
 <script setup lang="ts">
 import { onMounted, ref, watchEffect, watch } from "vue";
 import EditorPage from "../common/EditorPage.vue";
+import moment from "moment";
 const props = defineProps({
   rowData: Object as () => any,
   isEdit: Boolean,
   type: String,
+  content: Array as () => any,
 });
 const editorPage = ref(null);
-const content = ref([
-  {
-    title: "标题",
-    content: "",
-  },
-  {
-    title: "创建时间",
-    content: "",
-  },
-  {
-    title: "介绍",
-    content: "",
-  },
-  {
-    title: "技术路线",
-    content: "",
-  },
-]);
+const info = ref([])
 onMounted(() => {
-  console.log(props);
+  info.value = props.content;
+    console.log(1111, props.rowData,info.value);
   if (props.rowData) {
-    content.value[0].content = props.rowData.title;
-    content.value[1].content = props.rowData.date;
-    content.value[2].content = props.rowData.describe;
-    content.value[3].content = props.rowData.route;
+    info.value.forEach((item: any) => {
+      if (item.title == "标题") {
+        item.content = props.rowData.title;
+      } else if (item.title == "创建时间") {
+        item.content = moment(props.rowData.date).format("YYYY-MM-DD");
+      } else if (item.title == "产品简介") {
+        item.content = props.rowData.describe;
+      } else if (item.title == "产品路径") {
+        item.content = props.rowData.route;
+      } else if (item.title == "产品特色") {
+        item.content = props.rowData.feature;
+      } else if (item.title == "产品应用") {
+        item.content = props.rowData.application;
+      }
+    });
   }
+    console.log(2222, info.value);
 });
-watchEffect(() => {
-  console.log(1, props.isEdit);
-});
+watchEffect(() => {});
 watch(
-  () => [editorPage.value?.[0]?.valueHtml, editorPage.value?.[1]?.valueHtml],
+  () => [
+    editorPage.value?.forEach((item) => {
+      return item.valueHtml;
+    }),
+  ],
   (newValue, oldValue) => {
     if (newValue) {
-      console.log("ref=========", editorPage.value?.[0]?.valueHtml);
-      console.log("ref=========", editorPage.value?.[1]?.valueHtml);
+      const newContent = props.content.slice(-editorPage.value?.length);
+      editorPage.value?.forEach((item, index) => {
+        newContent[index].content = item.valueHtml;
+      });
     }
   }
 );

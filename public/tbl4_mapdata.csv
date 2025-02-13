@@ -1,0 +1,10 @@
+Sample,[Total] Fraction of Mapped Reads,[Target] Average depth,[Target] Fraction Region covered >= 4x,[Target] Fraction Region covered >= 10x,[Target] Fraction Region covered >= 30x,[flank] flank size,[flank] Average depth
+FH,100.0,92.31,98.65,98.14,93.42,200,43.5
+FX445,100.0,18.82,95.07,80.13,15.89,200,6.99
+Fy,100.0,66.92,98.53,97.61,87.92,200,31.55
+YN19,99.98,33.39,96.84,92.29,55.03,200,16.11
+Yy,99.99,64.24,98.15,97.08,86.37,200,28.03
+EF445,100.0,31.11,97.57,92.56,50.67,200,14.4
+YX445,99.99,55.48,98.22,96.71,81.55,200,26.64
+YH,99.99,59.25,98.08,96.77,83.45,200,29.04
+Fielder,100.0,28.18,97.32,91.17,43.09,200,12.29

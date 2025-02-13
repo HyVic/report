@@ -21,13 +21,13 @@
       </div>
       <div class="service_introduce_content">
         <el-scrollbar height="100%">
-          <el-table :data="tableData" style="width: 100%" @expand-change="expandChange">
+          <el-table :data="tableData" style="width: 100%" @expand-change="expandChange" border>
             <el-table-column type="expand" width="100px" label="操作">
               <template #default="props">
                 <div class="edit_content" m="3">
                   <div class="edit_content_inner">
                     <div class="top_edit"><span @click="handleEdit(props.row)"><i class="iconfont icon-bianji"></i>{{ text[props.row.id] }}</span></div>
-                    <editor-come-pages :row-data="props.row" :is-edit="isEdit[props.row.id]" :type="'edit'"></editor-come-pages>
+                    <editor-come-pages :row-data="props.row" :is-edit="isEdit[props.row.id]" :type="'edit'" :content="content"></editor-come-pages>
                   </div>
                 </div>
               </template>
@@ -39,7 +39,7 @@
       </div>
     </div>
   </el-scrollbar>
-  <add-new-service v-if="showAdd" @close="showAdd=false" :title="'新增捕获测序'"></add-new-service>
+  <add-new-service v-if="showAdd" @close="showAdd=false" :title="'新增捕获测序'" :content="content"></add-new-service>
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
@@ -55,6 +55,24 @@ const handleEditi = () => {
     isEditi.value = true;
   }
 };
+const content = ref([
+  {
+    title: "标题",
+    content: "",
+  },
+  {
+    title: "创建时间",
+    content: "",
+  },
+  {
+    title: "介绍",
+    content: "",
+  },
+  {
+    title: "技术路线",
+    content: "",
+  },
+]);
 import EditorComePages from "../common/EditorComePages.vue";
 import AddNewService from "../common/AddNewService.vue";
 const tableData = ref([

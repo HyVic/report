@@ -7,7 +7,7 @@
       </div>
       <div class="dialog-basic-info common-cont">
         <el-scrollbar height="100%">
-          <editor-come-pages :type="'add'"></editor-come-pages>
+          <editor-come-pages :type="'add'" :row-data="rowData" :is-edit="true" :content="content"></editor-come-pages>
         </el-scrollbar>
       </div>
       <div class="dialog-footer">
@@ -17,11 +17,13 @@
   </div>
 </template>
   <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import EditorComePages from "../common/EditorComePages.vue";
 const props = defineProps({
   isEdit: Boolean,
-  title: String
+  title: String,
+  content: Array as () => any,
+  rowData: Object as () => any,
 });
 
 const emits = defineEmits(["close"]);
@@ -30,6 +32,7 @@ const Close = () => {
 };
 const submit = () => {
   emits("close");
+  console.log('提交==', props.content);
 };
 const info = ref({
   image: "",
@@ -38,6 +41,9 @@ const info = ref({
   title: "",
   describe: "",
 });
+watch(props.content, (newVal) => {
+  // console.log('props.content=====', newVal);
+})
 </script>
   <style scoped lang="scss">
 @mixin layout($align, $justify) {
