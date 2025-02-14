@@ -127,10 +127,10 @@
                   <div class="cont">采用 fastp对数据进行质量控制。以样品S1的R1端测序为例，具体结果见图1。</div>
                   <div class="echarts">
                     <div style="font-size: 16px;margin: 40px 0 0 20px;">
-                          <el-select v-model="value1" style="width: 240px">
-                            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
-                          </el-select>
-                        </div>
+                      <el-select v-model="value1" style="width: 240px">
+                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+                      </el-select>
+                    </div>
                     <!-- <div class="echarts_nav">
                       <div class="echarts_nav_item" :class="{ 'item_active': value1 === item.value }"
                         v-for="item in options" :key="item.value" @click="(value1 = item.value)">{{item.value}}
@@ -155,10 +155,15 @@
                   <div class="cont">Base content分布主要用于检测测序数据是否存在AT、GC分离现象，这种现象通常由建库或测序引入，并影响后续的生物信息分析结果。
                     Base content分布结果见图2，结果显示，建库和测序表现出较好的均一度，可以进行后续信息分析。</div>
                   <div class="echarts">
-                    <div class="echarts_nav">
+                    <!-- <div class="echarts_nav">
                       <div class="echarts_nav_item" :class="{ 'item_active': value2 === item.value }"
                         v-for="item in options2" :key="item.value" @click="(value2 = item.value)">{{item.value}}
                       </div>
+                    </div> -->
+                    <div style="font-size: 16px;margin: 40px 0 0 20px;">
+                      <el-select v-model="value2" style="width: 240px">
+                        <el-option v-for="item in options2" :key="item.value" :label="item.label" :value="item.value" />
+                      </el-select>
                     </div>
                     <div style="width:calc(100% - 300px);">
                       <iframe :src="'/fig2_base_content/' + value2 + '.html'" width="100%" height="500px" scrolling="no"
@@ -208,10 +213,15 @@
                 </div>
                 <div>
                   <div class="echarts">
-                    <div class="echarts_nav">
+                    <!-- <div class="echarts_nav">
                       <div class="echarts_nav_item" :class="{ 'item_active': value3 === item.value }"
                         v-for="item in options3" :key="item.value" @click="(value3 = item.value)">{{item.value}}
                       </div>
+                    </div> -->
+                    <div style="font-size: 16px;margin: 40px 0 0 20px;">
+                      <el-select v-model="value3" style="width: 240px">
+                        <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value" />
+                      </el-select>
                     </div>
                     <div style="width:calc(100% - 300px);">
                       <iframe :src="'/fig3_piecharts/' + value3 + '.html'" width="100%" height="500px" scrolling="no"
@@ -273,10 +283,15 @@
                 </div>
                 <div>
                   <div class="echarts">
-                    <div class="echarts_nav">
+                    <!-- <div class="echarts_nav">
                       <div class="echarts_nav_item" :class="{ 'item_active': value4 === item.value }"
                         v-for="item in options4" :key="item.value" @click="(value4 = item.value)">{{item.value}}
                       </div>
+                    </div> -->
+                    <div style="font-size: 16px;margin: 40px 0 0 20px;">
+                      <el-select v-model="value4" style="width: 240px">
+                        <el-option v-for="item in options4" :key="item.value" :label="item.label" :value="item.value" />
+                      </el-select>
                     </div>
                     <div style="width:calc(100% - 300px);">
                       <iframe :src="'/fig4_coverage/' + value4 + '.html'" width="100%" height="500px" scrolling="no"
@@ -359,10 +374,15 @@
                     annotaiton details一节。https：//pcingola.github.io/SnpEff/snpeff/inputoutput</p>
                 </div>
                 <div class="echarts">
-                  <div class="echarts_nav">
+                  <!-- <div class="echarts_nav">
                     <div class="echarts_nav_item" :class="{ 'item_active': value5 === item.value }"
                       v-for="item in options5" :key="item.value" @click="(value5 = item.value)">{{item.value}}
                     </div>
+                  </div> -->
+                  <div style="font-size: 16px;margin: 40px 0 0 20px;">
+                    <el-select v-model="value5" style="width: 240px">
+                      <el-option v-for="item in options5" :key="item.value" :label="item.label" :value="item.value" />
+                    </el-select>
                   </div>
                   <div style="width:calc(100% - 300px);">
                     <iframe :src="'/fig5_snp_anno/' + value5 + '.html'" width="100%" height="500px" scrolling="no"
@@ -525,10 +545,15 @@
                   <p class="tip">Intergenic：基因间区域的InDel的数量</p>
                 </div>
                 <div class="echarts">
-                  <div class="echarts_nav">
+                  <!-- <div class="echarts_nav">
                     <div class="echarts_nav_item" :class="{ 'item_active': value6 === item.value }"
                       v-for="item in options6" :key="item.value" @click="(value6 = item.value)">{{item.value}}
                     </div>
+                  </div> -->
+                  <div style="font-size: 16px;margin: 40px 0 0 20px;">
+                    <el-select v-model="value6" style="width: 240px">
+                      <el-option v-for="item in options6" :key="item.value" :label="item.label" :value="item.value" />
+                    </el-select>
                   </div>
                   <div style="width:calc(100% - 300px);">
                     <iframe :src="'/fig6_indel_anno/' + value6 + '.html'" width="100%" height="500px" scrolling="no"
@@ -1909,6 +1934,7 @@
           .tip {
             margin: 0 0 0 10px;
             font-size: 14px;
+
             &:first-child {
               margin: 0;
             }
