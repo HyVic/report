@@ -31,7 +31,6 @@ function transformSheets(sheets: { [key: string]: any }): any[] {
 }
 import axios from "axios";
 export function commonSheet(url: string, sort: any) {
-  console.log(url, sort);
   type type1 = {
     Sample: string;
     'Raw reads': string;
@@ -68,7 +67,20 @@ export function commonSheet(url: string, sort: any) {
     nTransitions: string;
     nTransversions: string;
   }
-  type type7 = {
+  type type6 = {
+    Type: string;
+    Downstream: string,
+    Exon: string,
+    Intergenic: string,
+    Intron: string,
+    'Splice Site Acceptor': string,
+    'Splice Site Donor': string,
+    'Splice Site Region': string,
+    Transcript: string,
+    Upstream: string,
+    'UTR 3 Prime': string,
+  }
+  /*   type type7 = {
     sample: string;
     POS: string;
     ALT: string;
@@ -117,7 +129,7 @@ export function commonSheet(url: string, sort: any) {
     num43: string;
     num44: string;
     num45: string;
-  }
+  } */
   type type8 = {
     Sample: string;
     nRefHom: string;
@@ -132,7 +144,7 @@ export function commonSheet(url: string, sort: any) {
   let sheetTableData2: type2[] = [];
   let sheetTableData4: type4[] = [];
   let sheetTableData5: type5[] = [];
-  let sheetTableData7: type7[] = [];
+  let sheetTableData6: type6[] = [];
   let sheetTableData8: type8[] = [];
   // let sheetTableData: tableData[] = []
   let sheetData: any[][] = [];
@@ -154,8 +166,8 @@ export function commonSheet(url: string, sort: any) {
           chromSheet4(sheetTableData4, item);
         } else if (sort === 5) {
           chromSheet5(sheetTableData5, item);
-        } else if (sort === 7) {
-          chromSheet7(sheetTableData7, item);
+        } else if (sort === 6) {
+          chromSheet6(sheetTableData6, item);
         } else if (sort === 8) {
           chromSheet8(sheetTableData8, item);
         }
@@ -164,7 +176,7 @@ export function commonSheet(url: string, sort: any) {
     .catch((err) => {
       console.log(err);
     });
-  return sort === 1 ? sheetTableData1 : sort === 2 ? sheetTableData2 : sort === 4? sheetTableData4 :  sort === 5? sheetTableData5 : sort === 8? sheetTableData8 : [];
+  return sort === 1 ? sheetTableData1 : sort === 2 ? sheetTableData2 : sort === 4? sheetTableData4 :  sort === 5 ? sheetTableData5 :  sort === 6 ? sheetTableData6 : sort === 8? sheetTableData8 : [];
 }
 
 export function chromSheet1(
@@ -257,7 +269,38 @@ export function chromSheet5(
   });
   return sheetTableData;
 }
-export function chromSheet7(
+export function chromSheet6(
+  sheetTableData: {
+    Type: string;
+    Downstream: string,
+    Exon: string,
+    Intergenic: string,
+    Intron: string,
+    'Splice Site Acceptor': string,
+    'Splice Site Donor': string,
+    'Splice Site Region': string,
+    Transcript: string,
+    Upstream: string,
+    'UTR 3 Prime': string,
+  }[],
+  item: { [key: string]: any }
+) {
+  sheetTableData.push({
+    Type: item[0],
+    Downstream: item[1],
+    Exon: item[2],
+    Intergenic: item[3],
+    Intron: item[4],
+    'Splice Site Acceptor': item[5],
+    'Splice Site Donor': item[6],
+    'Splice Site Region': item[7],
+    Transcript: item[8],
+    Upstream: item[9],
+    'UTR 3 Prime': item[10]
+  });
+  return sheetTableData;
+}
+/* export function chromSheet7(
   sheetTableData: {
     sample: string;
     POS: string;
@@ -361,7 +404,7 @@ export function chromSheet7(
     num45: item[47]
   });
   return sheetTableData;
-}
+} */
 export function chromSheet8(
   sheetTableData: {
     Sample: string;
