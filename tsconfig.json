@@ -5,6 +5,7 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
+    "noImplicitAny":false,
     "module": "ESNext" // or ES2015, ES2020
   },
   "ts-node": {

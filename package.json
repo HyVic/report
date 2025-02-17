@@ -6,7 +6,7 @@
   "scripts": {
     "start": "ts-node server.ts",
     "dev": "vite --host 192.168.3.88 --port 8081",
-    "build": "vue-tsc -b && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {

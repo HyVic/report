@@ -54,7 +54,7 @@ export function commonSheet(url: string, sort: any) {
     '[Target] Fraction Region covered >= 4x': string,
     '[Target] Fraction Region covered >= 10x': string,
     '[Target] Fraction Region covered >= 30x': string,
-    '[flank] flank size':string,
+    '[flank] flank size': string,
     '[flank] Average depth': string
   }
   type type5 = {
@@ -80,56 +80,21 @@ export function commonSheet(url: string, sort: any) {
     Upstream: string,
     'UTR 3 Prime': string,
   }
-  /*   type type7 = {
-    sample: string;
-    POS: string;
-    ALT: string;
-    num1: string;
-    num2: string;
-    num3: string;
-    num4: string;
-    num5: string;
-    num6: string;
-    num7: string;
-    num8: string;
-    num9: string;
-    num10: string;
-    num11: string;
-    num12: string;
-    num13: string;
-    num14: string;
-    num15: string;
-    num16: string;
-    num17: string;
-    num18: string;
-    num19: string;
-    num20: string;
-    num21: string;
-    num22: string;
-    num23: string;
-    num24: string;
-    num25: string;
-    num26: string;
-    num27: string;
-    num28: string;
-    num29: string;
-    num30: string;
-    num31: string;
-    num32: string;
-    num33: string;
-    num34: string;
-    num35: string;
-    num36: string;
-    num37: string;
-    num38: string;
-    num39: string;
-    num40: string;
-    num41: string;
-    num42: string;
-    num43: string;
-    num44: string;
-    num45: string;
-  } */
+  type type7 = {
+    CHROM: string,
+    POS: string,
+    ALT: string,
+    '16-119': string,
+    '16-120': string,
+    '16-122': string,
+    '16-146': string,
+    '16-161': string,
+    '16-176': string,
+    '16-182': string,
+    '16-183': string,
+    '16-200': string,
+    '16-201': string
+  }
   type type8 = {
     Sample: string;
     nRefHom: string;
@@ -146,7 +111,7 @@ export function commonSheet(url: string, sort: any) {
   let sheetTableData5: type5[] = [];
   let sheetTableData6: type6[] = [];
   let sheetTableData8: type8[] = [];
-  // let sheetTableData: tableData[] = []
+  let sheetTableData7: type7[] = [];
   let sheetData: any[][] = [];
   // let url = "/chrom.xlsx" //放在public目录下的文件可以直接访问
   //读取二进制excel文件
@@ -168,6 +133,8 @@ export function commonSheet(url: string, sort: any) {
           chromSheet5(sheetTableData5, item);
         } else if (sort === 6) {
           chromSheet6(sheetTableData6, item);
+        } else if (sort === 7) {
+          chromSheet7(sheetTableData7, item);
         } else if (sort === 8) {
           chromSheet8(sheetTableData8, item);
         }
@@ -176,7 +143,7 @@ export function commonSheet(url: string, sort: any) {
     .catch((err) => {
       console.log(err);
     });
-  return sort === 1 ? sheetTableData1 : sort === 2 ? sheetTableData2 : sort === 4? sheetTableData4 :  sort === 5 ? sheetTableData5 :  sort === 6 ? sheetTableData6 : sort === 8? sheetTableData8 : [];
+  return sort === 1 ? sheetTableData1 : sort === 2 ? sheetTableData2 : sort === 4 ? sheetTableData4 : sort === 5 ? sheetTableData5 : sort === 6 ? sheetTableData6 : sort === 7 ? sheetTableData7 : sort === 8 ? sheetTableData8 : [];
 }
 
 export function chromSheet1(
@@ -227,7 +194,7 @@ export function chromSheet4(
     '[Target] Fraction Region covered >= 4x': string,
     '[Target] Fraction Region covered >= 10x': string,
     '[Target] Fraction Region covered >= 30x': string,
-    '[flank] flank size':string,
+    '[flank] flank size': string,
     '[flank] Average depth': string
   }[],
   item: { [key: string]: any }
@@ -239,7 +206,7 @@ export function chromSheet4(
     '[Target] Fraction Region covered >= 4x': item[3],
     '[Target] Fraction Region covered >= 10x': item[4],
     '[Target] Fraction Region covered >= 30x': item[5],
-    '[flank] flank size':item[6],
+    '[flank] flank size': item[6],
     '[flank] Average depth': item[7]
   });
   return sheetTableData;
@@ -300,111 +267,41 @@ export function chromSheet6(
   });
   return sheetTableData;
 }
-/* export function chromSheet7(
+export function chromSheet7(
   sheetTableData: {
-    sample: string;
+    CHROM: string;
     POS: string;
     ALT: string;
-    num1: string;
-    num2: string;
-    num3: string;
-    num4: string;
-    num5: string;
-    num6: string;
-    num7: string;
-    num8: string;
-    num9: string;
-    num10: string;
-    num11: string;
-    num12: string;
-    num13: string;
-    num14: string;
-    num15: string;
-    num16: string;
-    num17: string;
-    num18: string;
-    num19: string;
-    num20: string;
-    num21: string;
-    num22: string;
-    num23: string;
-    num24: string;
-    num25: string;
-    num26: string;
-    num27: string;
-    num28: string;
-    num29: string;
-    num30: string;
-    num31: string;
-    num32: string;
-    num33: string;
-    num34: string;
-    num35: string;
-    num36: string;
-    num37: string;
-    num38: string;
-    num39: string;
-    num40: string;
-    num41: string;
-    num42: string;
-    num43: string;
-    num44: string;
-    num45: string;
+    '16-119': string,
+    '16-120': string,
+    '16-122': string,
+    '16-146': string,
+    '16-161': string,
+    '16-176': string,
+    '16-182': string,
+    '16-183': string,
+    '16-200': string,
+    '16-201': string
   }[],
   item: { [key: string]: any }
 ) {
   sheetTableData.push({
-    sample: item[0],
+    CHROM: item[0],
     POS: item[1],
     ALT: item[2],
-    num1: item[3],
-    num2: item[4],
-    num3: item[5],
-    num4: item[6],
-    num5: item[7],
-    num6: item[8],
-    num7: item[9],
-    num8: item[10],
-    num9: item[11],
-    num10: item[12],
-    num11: item[13],
-    num12: item[14],
-    num13: item[15],
-    num14: item[16],
-    num15: item[17],
-    num16: item[18],
-    num17: item[19],
-    num18: item[20],
-    num19: item[21],
-    num20: item[22],
-    num21: item[23],
-    num22: item[24],
-    num23: item[25],
-    num24: item[26],
-    num25: item[27],
-    num26: item[28],
-    num27: item[29],
-    num28: item[30],
-    num29: item[31],
-    num30: item[32],
-    num31: item[33],    
-    num32: item[34],
-    num33: item[35],
-    num34: item[36],
-    num35: item[37],
-    num36: item[38],
-    num37: item[39],
-    num38: item[40],
-    num39: item[41],
-    num40: item[42],
-    num41: item[43],
-    num42: item[44],
-    num43: item[45],
-    num44: item[46],
-    num45: item[47]
+    '16-119': item[3],
+    '16-120': item[4],
+    '16-122': item[5],
+    '16-146': item[6],
+    '16-161': item[7],
+    '16-176': item[8],
+    '16-182': item[9],
+    '16-183': item[10],
+    '16-200': item[11],
+    '16-201': item[12]
   });
   return sheetTableData;
-} */
+}
 export function chromSheet8(
   sheetTableData: {
     Sample: string;
