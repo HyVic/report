@@ -1494,19 +1494,24 @@
           table {
             width: 100%;
             border-collapse: collapse;
-            tbody{
+
+            tbody {
               border: 1px solid #ebeef5
             }
-            tr{
+
+            tr {
               border-bottom: 1px solid #ebeef5;
-              &:nth-of-type(even){
+
+              &:nth-of-type(even) {
                 background-color: #fafafa;
               }
-              &:hover{
+
+              &:hover {
                 background-color: #cacfdd3d;
               }
             }
-            td{
+
+            td {
               font-size: 14px;
               padding: 8px 12px;
               border-right: 1px solid #ebeef5;
@@ -1521,10 +1526,12 @@
             color: white;
             font-size: 14px;
             z-index: 100;
-            th{
+
+            th {
               padding: 8px 12px;
               border-right: 1px solid #ebeef5;
-              &:last-child{
+
+              &:last-child {
                 border: 0;
               }
             }
